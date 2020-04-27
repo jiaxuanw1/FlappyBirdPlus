@@ -17,6 +17,8 @@ import java.awt.event.KeyEvent;
 import java.applet.AudioClip;   
 import java.util.ArrayList;
 
+import arcade.AnimationPanel;
+
 
 public class ArcadeDemo extends AnimationPanel 
 {

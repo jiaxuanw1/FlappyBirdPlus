@@ -1,3 +1,4 @@
+package flappybird;
 
 /**
  * Class ArcadeRunner
@@ -11,11 +12,11 @@ import javax.swing.JFrame;
 
 import arcade.AnimationPanel;
 
-public class ArcadeRunner 
+public class FlappyBirdRunner 
 {
 
     int FPS = 60;   //Frames per second (animation speed)
-    AnimationPanel world = new ArcadeDemo();
+    AnimationPanel world = new FlappyBirdGame();
     
     
     
@@ -25,7 +26,7 @@ public class ArcadeRunner
     
     JFrame myFrame;
 
-    public ArcadeRunner() 
+    public FlappyBirdRunner() 
     {
         myFrame = new JFrame();
         myFrame.addWindowListener(new Closer());
@@ -57,7 +58,7 @@ public class ArcadeRunner
     
     public static void main(String[] args) 
     {
-        ArcadeRunner runner = new ArcadeRunner();
+        FlappyBirdRunner runner = new FlappyBirdRunner();
     }    
     
     private static class Closer extends java.awt.event.WindowAdapter 
