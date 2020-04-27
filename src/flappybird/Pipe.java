@@ -4,20 +4,36 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.ImageObserver;
 
+/**
+ * Code for the green pipes in Flappy Bird.
+ * 
+ * @author Jiaxuan Wang
+ */
 public class Pipe {
 
-	private final int width = 0; // CHANGE THIS
-	private final int height = 0; // CHANGE THIS
+	// original: 188 * 2100
+	private final int width = 94;
+	private final int height = 1050;
 
 	private int x;
 	private final int y;
 	private final int shift;
 	private final int xVel;
 
-	public Pipe(int maxY, int xVel) {
+	public Pipe(Rectangle screenBounds, int xVel) {
 		this.xVel = xVel;
-		shift = (int) Math.random() * (maxY - 20); // need to test numbers for the 20
+		shift = (int) (Math.random() * (screenBounds.getMaxY() - 300)) - 370;
+		x = (int) screenBounds.getMaxX() + 200;
+		// int testYVal = (int) ((screenBounds.getMaxY() - 300) - 370);
 		y = shift;
+	}
+
+	public int getX() {
+		return x;
+	}
+
+	public int getY() {
+		return y;
 	}
 
 	public int getWidth() {
@@ -28,8 +44,12 @@ public class Pipe {
 		return height;
 	}
 
-	public Rectangle getBounds() {
-		return new Rectangle(x, y, width, height);
+	public Rectangle getUpperBound() {
+		return new Rectangle(x, y, width, 445);
+	}
+
+	public Rectangle getLowerBound() {
+		return new Rectangle(x, shift + 605, width, 445);
 	}
 
 	public void animate() {
