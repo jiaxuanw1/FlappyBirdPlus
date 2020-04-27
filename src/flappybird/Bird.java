@@ -20,9 +20,7 @@ public class Bird {
 	private int yVel;
 
 	public Bird() {
-		x = 80;
-		y = 250;
-		yVel = 0;
+		reset();
 	}
 
 	public int getX() {
@@ -63,6 +61,15 @@ public class Bird {
 	 */
 	public void fly() {
 		yVel = -10; // CHANGE THIS
+	}
+
+	/**
+	 * Resets the bird to its original state in the ready phase.
+	 */
+	public void reset() {
+		x = 80;
+		y = 250;
+		yVel = 0;
 	}
 
 	/**

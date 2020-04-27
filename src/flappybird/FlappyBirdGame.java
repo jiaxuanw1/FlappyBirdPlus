@@ -32,10 +32,11 @@ public class FlappyBirdGame extends AnimationPanel {
 	public static final int CRASHED = 2;
 
 	private static Toolkit toolkit = Toolkit.getDefaultToolkit();
-	public static Image BIRD_IMAGE = toolkit.getImage("bird.png");
-	public static Image PIPE_IMAGE = toolkit.getImage("pipes.png");
-	public static Image BACKDROP_IMAGE = toolkit.getImage("backdrop.jpg");
-	public static Image GROUND_IMAGE = toolkit.getImage("ground.jpg");
+	public static Image BIRD_IMAGE = toolkit.getImage("src/resources/bird.png");
+	public static Image PIPE_IMAGE = toolkit.getImage("src/resources/pipes.png");
+	public static Image BACKDROP_IMAGE = toolkit.getImage("src/resources/backdrop.jpg");
+	public static Image GROUND_IMAGE = toolkit.getImage("src/resources/ground.jpg");
+	public static Image GAME_OVER_SCREEN = toolkit.getImage("src/resources/game_over.png");
 
 	// Instance Variables
 	// -------------------------------------------------------
@@ -46,8 +47,8 @@ public class FlappyBirdGame extends AnimationPanel {
 	private int prevBirdX;
 	private Rectangle bounds;
 
-	Bird bird = new Bird();
-	List<Pipe> pipes = new ArrayList<Pipe>();
+	private Bird bird = new Bird();
+	private List<Pipe> pipes = new ArrayList<Pipe>();
 
 	// Constructor
 	// -------------------------------------------------------
@@ -73,8 +74,8 @@ public class FlappyBirdGame extends AnimationPanel {
 			crash();
 		}
 
-		// Draw the pipes (draw these after the backdrop)
 		for (Pipe pipe : pipes) {
+			// Draw the pipes (draw these after the backdrop)
 			if (mode == PLAYING) {
 				pipe.animate();
 			}
@@ -91,12 +92,13 @@ public class FlappyBirdGame extends AnimationPanel {
 			}
 		}
 
-		// Add new pipe
+		// Add new pipe when previous pipe is far enough
 		Pipe lastPipe = pipes.get(pipes.size() - 1);
 		if (lastPipe.getX() < FRAME_WIDTH - 100 && mode == PLAYING) {
 			pipes.add(new Pipe(bounds, X_VELOCITY));
 		}
 
+		// Remove pipes that have gone off-screen
 		Pipe firstPipe = pipes.get(0);
 		if (firstPipe.getX() < -firstPipe.getWidth()) {
 			pipes.remove(firstPipe);
@@ -108,12 +110,17 @@ public class FlappyBirdGame extends AnimationPanel {
 		}
 		g.drawImage(GROUND_IMAGE, groundX, GROUND_LEVEL, this);
 
-		// Draw the bird
+		// Draw the bird (draw this after pipes and ground)
 		if (mode != READY) {
 			bird.animate(bounds);
 		}
 		bird.draw(g, this);
 
+		// Draw the game over screen
+		if (mode == CRASHED) {
+			g.drawImage(GAME_OVER_SCREEN, 32, 100, this);
+		}
+		
 		// General Text (Draw this last to make sure it's on top.)
 		g.setColor(Color.BLACK);
 		g.drawString("ArcadeEngine 2008", 10, 12);
@@ -134,7 +141,8 @@ public class FlappyBirdGame extends AnimationPanel {
 	public void restart() {
 		score = 0;
 		mode = READY;
-		pipes = new ArrayList<Pipe>();
+		bird.reset();
+		pipes.clear();
 		pipes.add(new Pipe(bounds, X_VELOCITY));
 	}
 
@@ -142,7 +150,9 @@ public class FlappyBirdGame extends AnimationPanel {
 	// Respond to Mouse Events
 	// -------------------------------------------------------
 	public void mouseClicked(MouseEvent e) {
-
+		if (mode == CRASHED) {
+			restart();
+		}
 	}
 
 	// -------------------------------------------------------
