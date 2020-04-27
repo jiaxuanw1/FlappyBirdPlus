@@ -1,10 +1,8 @@
 package flappybird;
 
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.Color;
-import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.KeyEvent;
 import java.applet.AudioClip;
@@ -32,21 +30,13 @@ public class FlappyBirdGame extends AnimationPanel {
 	public static final int PLAYING = 1;
 	public static final int CRASHED = 2;
 
-	private static Toolkit toolkit = Toolkit.getDefaultToolkit();
-	public static Image BIRD_IMAGE = toolkit.getImage("src/resources/bird.png");
-	public static Image PIPE_IMAGE = toolkit.getImage("src/resources/pipes.png");
-	public static Image BACKDROP_IMAGE = toolkit.getImage("src/resources/backdrop.jpg");
-	public static Image GROUND_IMAGE = toolkit.getImage("src/resources/ground.jpg");
-	public static Image GAME_OVER_SCREEN = toolkit.getImage("src/resources/game_over.png");
-
 	// Instance Variables
 	// -------------------------------------------------------
 	private int score;
 	private int highScore;
 	private int mode;
 	private int groundX;
-	private int prevBirdX;
-	private Rectangle bounds;
+	private final Rectangle bounds;
 
 	private Bird bird = new Bird();
 	private List<Pipe> pipes = new ArrayList<Pipe>();
@@ -54,12 +44,12 @@ public class FlappyBirdGame extends AnimationPanel {
 	// Constructor
 	// -------------------------------------------------------
 	public FlappyBirdGame() { // Enter the name and width and height.
-		super("Flappy Bird", FRAME_WIDTH, FRAME_HEIGHT);
+		super("Flappy Bird", FRAME_WIDTH + 15, FRAME_HEIGHT + 30);
+		Resources.load();
 		score = 0;
 		highScore = 0;
 		mode = READY;
 		groundX = 0;
-		prevBirdX = bird.getX();
 		bounds = new Rectangle(0, 0, FRAME_WIDTH, GROUND_LEVEL);
 		pipes.add(new Pipe(bounds, X_VELOCITY));
 	}
@@ -68,7 +58,7 @@ public class FlappyBirdGame extends AnimationPanel {
 	// -------------------------------------------------------
 	protected Graphics renderFrame(Graphics g) {
 		// Draw backdrop image
-		g.drawImage(BACKDROP_IMAGE, 0, 0, FRAME_WIDTH, FRAME_HEIGHT, this);
+		g.drawImage(Resources.BACKDROP_IMAGE, 0, 0, FRAME_WIDTH, FRAME_HEIGHT, this);
 
 		// Detect when the bird hits the ground
 		if (bird.getY() + bird.getHeight() >= GROUND_LEVEL) {
@@ -83,7 +73,7 @@ public class FlappyBirdGame extends AnimationPanel {
 			pipe.draw(g, this);
 
 			// Increment the score when the bird passes between a pair of pipes
-			if (prevBirdX < pipe.getX() && bird.getX() >= pipe.getX()) {
+			if (pipe.getPreviousX() > bird.getX() && pipe.getX() <= bird.getX() && mode == PLAYING) {
 				score++;
 			}
 
@@ -95,7 +85,7 @@ public class FlappyBirdGame extends AnimationPanel {
 
 		// Add new pipe when previous pipe is far enough
 		Pipe lastPipe = pipes.get(pipes.size() - 1);
-		if (lastPipe.getX() < FRAME_WIDTH - 100 && mode == PLAYING) {
+		if (lastPipe.getX() < FRAME_WIDTH - 80 && mode == PLAYING) {
 			pipes.add(new Pipe(bounds, X_VELOCITY));
 		}
 
@@ -109,7 +99,7 @@ public class FlappyBirdGame extends AnimationPanel {
 		if (mode != CRASHED) {
 			groundX = (groundX < -23) ? 0 : groundX + X_VELOCITY;
 		}
-		g.drawImage(GROUND_IMAGE, groundX, GROUND_LEVEL, this);
+		g.drawImage(Resources.GROUND_IMAGE, groundX, GROUND_LEVEL, this);
 
 		// Draw the bird (draw this after pipes and ground)
 		if (mode != READY) {
@@ -119,16 +109,30 @@ public class FlappyBirdGame extends AnimationPanel {
 
 		// Draw the game over screen
 		if (mode == CRASHED) {
-			g.drawImage(GAME_OVER_SCREEN, 32, 100, this);
+			g.drawImage(Resources.GAME_OVER_SCREEN, 50, 120, 400, 400, this);
 		}
 
-		// General Text (Draw this last to make sure it's on top.)
-		g.setColor(Color.BLACK);
-		g.drawString("ArcadeEngine 2008", 10, 12);
-		g.drawString("mouseX=" + mouseX, 200, 12);
-		g.drawString("mouseY=" + mouseY, 200, 26);
+//		// General Text (Draw this last to make sure it's on top.)
+//		g.setColor(Color.BLACK);
+//		g.drawString("ArcadeEngine 2008", 10, 12);
+//		g.drawString("mouseX=" + mouseX, 200, 12);
+//		g.drawString("mouseY=" + mouseY, 200, 26);
 
-		prevBirdX = bird.getX();
+		// Draw the score
+		g.setColor(Color.WHITE);
+		g.setFont(Resources.FONT);
+		int scoreLen = (int) g.getFontMetrics().getStringBounds(Integer.toString(score), g).getWidth();
+		if (mode == CRASHED) {
+			int scoreStart = 415 - scoreLen;
+			g.drawString(Integer.toString(score), scoreStart, 325);
+			// Draw the high score
+			int highScoreLen = (int) g.getFontMetrics().getStringBounds(Integer.toString(highScore), g).getWidth();
+			int highScoreStart = 415 - highScoreLen;
+			g.drawString(Integer.toString(highScore), highScoreStart, 400);
+		} else {
+			int start = FRAME_WIDTH / 2 - scoreLen / 2;
+			g.drawString(Integer.toString(score), start, 50);
+		}
 
 		return g;
 	}

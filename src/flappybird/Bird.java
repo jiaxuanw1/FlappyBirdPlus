@@ -56,7 +56,7 @@ public class Bird {
 	 * that the velocity is negative because downward is positive.
 	 */
 	public void fly() {
-		yVel = -10;
+		yVel = -10.5;
 	}
 
 	/**
@@ -64,8 +64,8 @@ public class Bird {
 	 * window in the ready phase.
 	 */
 	public void reset() {
-		x = 80;
-		y = 250;
+		x = 140;
+		y = 310;
 		yVel = 0;
 	}
 
@@ -76,7 +76,7 @@ public class Bird {
 	 * @param screenBounds a {@code Rectangle} specifying the boundaries
 	 */
 	public void animate(Rectangle screenBounds) {
-		yVel += 0.75;
+		yVel += 0.7;
 		y += yVel;
 
 		if (y > screenBounds.getMaxY() - height) {
@@ -95,7 +95,7 @@ public class Bird {
 	 * @param io the {@code ImageObserver} to be notified
 	 */
 	public void draw(Graphics g, ImageObserver io) {
-		g.drawImage(FlappyBirdGame.BIRD_IMAGE, (int) x, (int) y, width, height, io);
+		g.drawImage(Resources.BIRD_IMAGE, (int) x, (int) y, width, height, io);
 	}
 
 }
