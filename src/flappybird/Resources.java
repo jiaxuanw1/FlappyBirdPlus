@@ -9,6 +9,9 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+/**
+ * {@code Resources} class for loading the required images and font.
+ */
 public class Resources {
 
 	public static Image BIRD_IMAGE;
@@ -17,6 +20,10 @@ public class Resources {
 	public static Image GROUND_IMAGE;
 
 	public static Image GAME_OVER_SCREEN;
+	public static Image BRONZE_MEDAL;
+	public static Image SILVER_MEDAL;
+	public static Image GOLD_MEDAL;
+	public static Image PLATINUM_MEDAL;
 
 	public static Font FONT;
 
@@ -28,6 +35,10 @@ public class Resources {
 			GROUND_IMAGE = ImageIO.read(new File("src/resources/images/ground.jpg"));
 
 			GAME_OVER_SCREEN = ImageIO.read(new File("src/resources/images/game_over.png"));
+			BRONZE_MEDAL = ImageIO.read(new File("src/resources/images/bronze_medal.jpg"));
+			SILVER_MEDAL = ImageIO.read(new File("src/resources/images/silver_medal.jpg"));
+			GOLD_MEDAL = ImageIO.read(new File("src/resources/images/gold_medal.jpg"));
+			PLATINUM_MEDAL = ImageIO.read(new File("src/resources/images/platinum_medal.jpg"));
 
 			FONT = Font.createFont(Font.TRUETYPE_FONT, new File("src/resources/fonts/04B_19__.TTF")).deriveFont(40f);
 			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();

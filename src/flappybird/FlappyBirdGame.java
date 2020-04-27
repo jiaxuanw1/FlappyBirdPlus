@@ -112,24 +112,39 @@ public class FlappyBirdGame extends AnimationPanel {
 			g.drawImage(Resources.GAME_OVER_SCREEN, 50, 120, 400, 400, this);
 		}
 
-//		// General Text (Draw this last to make sure it's on top.)
-//		g.setColor(Color.BLACK);
-//		g.drawString("ArcadeEngine 2008", 10, 12);
-//		g.drawString("mouseX=" + mouseX, 200, 12);
-//		g.drawString("mouseY=" + mouseY, 200, 26);
+		// General Text (Draw this last to make sure it's on top.)
+		g.setColor(Color.BLACK);
+		g.drawString("ArcadeEngine 2008", 10, 12);
+		g.drawString("mouseX=" + mouseX, 200, 12);
+		g.drawString("mouseY=" + mouseY, 200, 26);
 
-		// Draw the score
 		g.setColor(Color.WHITE);
 		g.setFont(Resources.FONT);
-		int scoreLen = (int) g.getFontMetrics().getStringBounds(Integer.toString(score), g).getWidth();
+
 		if (mode == CRASHED) {
+			// Draw the score
+			int scoreLen = (int) g.getFontMetrics().getStringBounds(Integer.toString(score), g).getWidth();
 			int scoreStart = 415 - scoreLen;
 			g.drawString(Integer.toString(score), scoreStart, 325);
+
 			// Draw the high score
 			int highScoreLen = (int) g.getFontMetrics().getStringBounds(Integer.toString(highScore), g).getWidth();
 			int highScoreStart = 415 - highScoreLen;
 			g.drawString(Integer.toString(highScore), highScoreStart, 400);
+
+			// Draw the medal
+			if (highScore >= 40) {
+				g.drawImage(Resources.PLATINUM_MEDAL, 85, 300, 93, 90, this);
+			} else if (highScore >= 30) {
+				g.drawImage(Resources.GOLD_MEDAL, 90, 300, 93, 91, this);
+			} else if (highScore >= 20) {
+				g.drawImage(Resources.SILVER_MEDAL, 90, 300, 88, 95, this);
+			} else if (highScore >= 10) {
+				g.drawImage(Resources.BRONZE_MEDAL, 88, 300, 93, 91, this);
+			}
+
 		} else {
+			int scoreLen = (int) g.getFontMetrics().getStringBounds(Integer.toString(score), g).getWidth();
 			int start = FRAME_WIDTH / 2 - scoreLen / 2;
 			g.drawString(Integer.toString(score), start, 50);
 		}
