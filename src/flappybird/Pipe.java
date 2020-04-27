@@ -36,7 +36,7 @@ public class Pipe {
 	}
 
 	//Accessors
-    //-------------------------------------------------------
+	//-------------------------------------------------------
 	public int getX() { return x; }
 	public int getY() { return y; }
 	public int getWidth() { return width; }

@@ -12,12 +12,12 @@ import java.awt.image.ImageObserver;
 public class Bird {
 
 	// original: 397 * 281
-	private final int width = 51;
-	private final int height = 36;
+	private final int width = 52;
+	private final int height = 37;
 
-	private int x;
-	private int y;
-	private int yVel;
+	private double x;
+	private double y;
+	private double yVel;
 
 	/**
 	 * Constructs a new {@code Bird} object hovering in the middle of the window, in 
@@ -29,11 +29,11 @@ public class Bird {
 
 	// Accessors
 	// -------------------------------------------------------
-	public int getX() {	return x; }
-	public int getY() { return y; }
+	public int getX() { return (int) x; }
+	public int getY() { return (int) y; }
 	public int getWidth() {	return width; }
 	public int getHeight() { return height; }
-	public Rectangle getBounds() { return new Rectangle(x, y, width, height); }
+	public Rectangle getBounds() { return new Rectangle((int) x, (int) y, width, height); }
 
 	// Modifiers
 	// -------------------------------------------------------
@@ -76,14 +76,15 @@ public class Bird {
 	 * @param screenBounds a {@code Rectangle} specifying the boundaries
 	 */
 	public void animate(Rectangle screenBounds) {
-		yVel++;
+		yVel += 0.75;
 		y += yVel;
 
 		if (y > screenBounds.getMaxY() - height) {
 			y = (int) screenBounds.getMaxY() - height;
 			yVel = 0;
 		} else if (y < screenBounds.getMinY()) {
-			yVel = 1;
+			y = (int) screenBounds.getMinY();
+			yVel = 0;
 		}
 	}
 
@@ -94,7 +95,7 @@ public class Bird {
 	 * @param io the {@code ImageObserver} to be notified
 	 */
 	public void draw(Graphics g, ImageObserver io) {
-		g.drawImage(FlappyBirdGame.BIRD_IMAGE, x, y, width, height, io);
+		g.drawImage(FlappyBirdGame.BIRD_IMAGE, (int) x, (int) y, width, height, io);
 	}
 
 }

@@ -14,9 +14,10 @@ import java.util.List;
 import arcade.AnimationPanel;
 
 /**
- * Class FlappyBirdGame This class contains code for Flappy Bird.
+ * The {@code FlappyBirdGame} class contains the code for handling interactions
+ * and drawing the graphical elements of the game Flappy Bird.
  * 
- * Adapted from the AppletAE demo from years past.
+ * @author Jiaxuan Wang
  */
 public class FlappyBirdGame extends AnimationPanel {
 
@@ -120,7 +121,7 @@ public class FlappyBirdGame extends AnimationPanel {
 		if (mode == CRASHED) {
 			g.drawImage(GAME_OVER_SCREEN, 32, 100, this);
 		}
-		
+
 		// General Text (Draw this last to make sure it's on top.)
 		g.setColor(Color.BLACK);
 		g.drawString("ArcadeEngine 2008", 10, 12);
