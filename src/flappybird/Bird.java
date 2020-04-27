@@ -11,7 +11,7 @@ import java.awt.image.ImageObserver;
  */
 public class Bird {
 
-	// original picture: 397 * 281
+	// original: 397 * 281
 	private final int width = 51;
 	private final int height = 36;
 
@@ -19,52 +19,49 @@ public class Bird {
 	private int y;
 	private int yVel;
 
+	/**
+	 * Constructs a new {@code Bird} object hovering in the middle of the window, in 
+	 * the ready phase.
+	 */
 	public Bird() {
 		reset();
 	}
 
-	public int getX() {
-		return x;
-	}
+	// Accessors
+	// -------------------------------------------------------
+	public int getX() {	return x; }
+	public int getY() { return y; }
+	public int getWidth() {	return width; }
+	public int getHeight() { return height; }
+	public Rectangle getBounds() { return new Rectangle(x, y, width, height); }
 
-	public int getY() {
-		return y;
-	}
+	// Modifiers
+	// -------------------------------------------------------
+	public void setX(int x) { this.x = x; }
+	public void setY(int y) { this.y = y; }
 
-	public int getWidth() {
-		return width;
-	}
-
-	public int getHeight() {
-		return height;
-	}
-
-	public Rectangle getBounds() {
-		return new Rectangle(x, y, width, height);
-	}
-
-	public void setX(int x) {
-		this.x = x;
-	}
-
-	public void setY(int y) {
-		this.y = y;
-	}
-
+	/**
+	 * Returns whether this {@code Bird} object's boundaries intersect the specified
+	 * boundaries.
+	 * 
+	 * @param bounds a {@code Rectangle} specifying the boundaries to check
+	 * @return {@code true} if the boundaries intersect; {@code false} otherwise
+	 */
 	public boolean intersects(Rectangle bounds) {
 		return getBounds().intersects(bounds);
 	}
 
 	/**
-	 * Updates the bird's vertical velocity to make it fly upward. Note that the
-	 * velocity is negative because downward is positive.
+	 * Updates this {@code Bird}'s vertical velocity to make it fly upward. Note
+	 * that the velocity is negative because downward is positive.
 	 */
 	public void fly() {
-		yVel = -10; // CHANGE THIS
+		yVel = -10;
 	}
 
 	/**
-	 * Resets the bird to its original state in the ready phase.
+	 * Resets this {@code Bird} to its original state, hovering in the middle of the 
+	 * window in the ready phase.
 	 */
 	public void reset() {
 		x = 80;
@@ -73,10 +70,10 @@ public class Bird {
 	}
 
 	/**
-	 * Updates the location of the bird based on its velocity, taking into account
-	 * the upper and lower bounds of the frame.
+	 * Updates the location of this {@code Bird} based on its velocity, taking into
+	 * account the upper and lower bounds of the frame.
 	 * 
-	 * @param screenBounds object with the bounds of the window
+	 * @param screenBounds a {@code Rectangle} specifying the boundaries
 	 */
 	public void animate(Rectangle screenBounds) {
 		yVel++;
@@ -91,7 +88,7 @@ public class Bird {
 	}
 
 	/**
-	 * Draws the object to the screen.
+	 * Draws this {@code Bird} object to the screen.
 	 * 
 	 * @param g  the {@code Graphics} object to be drawn on
 	 * @param io the {@code ImageObserver} to be notified

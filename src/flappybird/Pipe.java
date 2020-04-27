@@ -20,6 +20,13 @@ public class Pipe {
 	private final int shift;
 	private final int xVel;
 
+	/**
+	 * Constructs a new {@code Pipe} object with a random position for its gap
+	 * within the specified boundaries.
+	 * 
+	 * @param screenBounds a {@code Rectangle} specifying the boundaries
+	 * @param xVel         the velocity at which the game scrolls
+	 */
 	public Pipe(Rectangle screenBounds, int xVel) {
 		this.xVel = xVel;
 		shift = (int) (Math.random() * (screenBounds.getMaxY() - 300)) - 370;
@@ -28,36 +35,24 @@ public class Pipe {
 		y = shift;
 	}
 
-	public int getX() {
-		return x;
-	}
+	//Accessors
+    //-------------------------------------------------------
+	public int getX() { return x; }
+	public int getY() { return y; }
+	public int getWidth() { return width; }
+	public int getHeight() { return height; }
+	public Rectangle getUpperBound() { return new Rectangle(x, y, width, 445); }
+	public Rectangle getLowerBound() { return new Rectangle(x, shift + 605, width, 445); }
 
-	public int getY() {
-		return y;
-	}
-
-	public int getWidth() {
-		return width;
-	}
-
-	public int getHeight() {
-		return height;
-	}
-
-	public Rectangle getUpperBound() {
-		return new Rectangle(x, y, width, 445);
-	}
-
-	public Rectangle getLowerBound() {
-		return new Rectangle(x, shift + 605, width, 445);
-	}
-
+	/**
+	 * Updates the position of this {@code Pipe} based on the horizontal velocity.
+	 */
 	public void animate() {
 		x += xVel;
 	}
 
 	/**
-	 * Draws the object to the screen.
+	 * Draws this {@code Pipe} object to the screen.
 	 * 
 	 * @param g  the {@code Graphics} object to be drawn on
 	 * @param io the {@code ImageObserver} to be notified
