@@ -6,9 +6,10 @@ import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.event.MouseEvent;
 import java.awt.event.KeyEvent;
-import java.applet.AudioClip;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.sound.sampled.Clip;
 
 import arcade.AnimationPanel;
 
@@ -44,7 +45,7 @@ public class FlappyBirdGame extends AnimationPanel {
 
 	// Constructor
 	// -------------------------------------------------------
-	public FlappyBirdGame() { // Enter the name and width and height.
+	public FlappyBirdGame() {
 		super("Flappy Bird", FRAME_WIDTH + 15, FRAME_HEIGHT + 30);
 		Resources.load();
 		score = 0;
@@ -62,7 +63,7 @@ public class FlappyBirdGame extends AnimationPanel {
 		g.drawImage(Resources.BACKDROP_IMAGE, 0, 0, FRAME_WIDTH, FRAME_HEIGHT, this);
 
 		// Detect when the bird hits the ground
-		if (bird.getY() + bird.getHeight() >= GROUND_LEVEL) {
+		if (bird.getY() + bird.getHeight() >= GROUND_LEVEL && mode == PLAYING) {
 			crash();
 		}
 
@@ -76,10 +77,11 @@ public class FlappyBirdGame extends AnimationPanel {
 			// Increment the score when the bird passes between a pair of pipes
 			if (pipe.getPreviousX() > bird.getX() && pipe.getX() <= bird.getX() && mode == PLAYING) {
 				score++;
+				playSound(Resources.SCORE_SOUND);
 			}
 
 			// Detect when the bird crashes into a pipe
-			if (bird.intersects(pipe.getUpperBound()) || bird.intersects(pipe.getLowerBound())) {
+			if ((bird.intersects(pipe.getUpperBound()) || bird.intersects(pipe.getLowerBound())) && mode == PLAYING) {
 				crash();
 			}
 		}
@@ -108,22 +110,14 @@ public class FlappyBirdGame extends AnimationPanel {
 		}
 		bird.draw(g, this);
 
-		// Draw the game over screen
-		if (mode == CRASHED) {
-			g.drawImage(Resources.GAME_OVER_SCREEN, 50, 120, 400, 400, this);
-		}
-
-//		// General Text (Draw this last to make sure it's on top.)
-//		g.setColor(Color.BLACK);
-//		g.drawString("ArcadeEngine 2008", 10, 12);
-//		g.drawString("mouseX=" + mouseX, 200, 12);
-//		g.drawString("mouseY=" + mouseY, 200, 26);
-
 		g.setColor(Color.WHITE);
 		g.setFont(Resources.FONT);
 		FontMetrics metrics = g.getFontMetrics();
 
 		if (mode == CRASHED) {
+			// Draw the Game Over screen
+			g.drawImage(Resources.GAME_OVER_SCREEN, 50, 120, 400, 400, this);
+
 			// Draw the score
 			int scoreLen = (int) metrics.getStringBounds(Integer.toString(score), g).getWidth();
 			int scoreStart = 415 - scoreLen;
@@ -163,6 +157,8 @@ public class FlappyBirdGame extends AnimationPanel {
 	public void crash() {
 		mode = CRASHED;
 		highScore = (score > highScore) ? score : highScore;
+		playSound(Resources.HIT_SOUND);
+		playSound(Resources.DIE_SOUND);
 	}
 
 	public void restart() {
@@ -171,6 +167,7 @@ public class FlappyBirdGame extends AnimationPanel {
 		bird.reset();
 		pipes.clear();
 		pipes.add(new Pipe(bounds, X_VELOCITY));
+		playSound(Resources.SWOOSH_SOUND);
 	}
 
 	// -------------------------------------------------------
@@ -192,6 +189,7 @@ public class FlappyBirdGame extends AnimationPanel {
 		if (c == ' ' && mode != CRASHED) {
 			bird.fly();
 			mode = PLAYING;
+			playSound(Resources.FLY_SOUND);
 		}
 	}
 
@@ -203,24 +201,14 @@ public class FlappyBirdGame extends AnimationPanel {
 
 	}
 
-	// -------------------------------------------------------
-	// Initialize Sounds
-	// -------------------------------------------------------
-//-----------------------------------------------------------------------
-	/*
-	 * Music section... To add music clips to the program, do four things. 1. Make a
-	 * declaration of the AudioClip by name ... AudioClip clipname; 2. Actually
-	 * make/get the .wav file and store it in the same directory as the code. 3. Add
-	 * a line into the initMusic() function to load the clip. 4. Use the play(),
-	 * stop() and loop() functions as needed in your code.
-	 * //-----------------------------------------------------------------------
+	/**
+	 * Plays the audio from a {@code Clip} object.
+	 * 
+	 * @param clip the {@code Clip} to play
 	 */
-	AudioClip themeMusic;
-	AudioClip bellSound;
-
-	public void initMusic() {
-		themeMusic = loadClip("under.wav");
-		bellSound = loadClip("ding.wav");
+	public void playSound(Clip clip) {
+		clip.setFramePosition(0);
+		clip.start();
 	}
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
