@@ -32,7 +32,6 @@ public class Pipe {
 		shift = (int) (Math.random() * (screenBounds.getMaxY() - 260)) - 400;
 		x = (int) screenBounds.getMaxX() + 200;
 		previousX = x;
-		// int testYVal = (int) ((screenBounds.getMaxY() - 260) - 400);
 		y = shift;
 	}
 

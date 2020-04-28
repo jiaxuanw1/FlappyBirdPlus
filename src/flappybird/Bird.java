@@ -11,9 +11,8 @@ import java.awt.image.ImageObserver;
  */
 public class Bird {
 
-	// original: 397 * 281
-	private final int width = 52;
-	private final int height = 37;
+	private final int width = 55;
+	private final int height = 39;
 
 	private double x;
 	private double y;

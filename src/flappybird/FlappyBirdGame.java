@@ -3,6 +3,7 @@ package flappybird;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.Color;
+import java.awt.FontMetrics;
 import java.awt.event.MouseEvent;
 import java.awt.event.KeyEvent;
 import java.applet.AudioClip;
@@ -112,23 +113,24 @@ public class FlappyBirdGame extends AnimationPanel {
 			g.drawImage(Resources.GAME_OVER_SCREEN, 50, 120, 400, 400, this);
 		}
 
-		// General Text (Draw this last to make sure it's on top.)
-		g.setColor(Color.BLACK);
-		g.drawString("ArcadeEngine 2008", 10, 12);
-		g.drawString("mouseX=" + mouseX, 200, 12);
-		g.drawString("mouseY=" + mouseY, 200, 26);
+//		// General Text (Draw this last to make sure it's on top.)
+//		g.setColor(Color.BLACK);
+//		g.drawString("ArcadeEngine 2008", 10, 12);
+//		g.drawString("mouseX=" + mouseX, 200, 12);
+//		g.drawString("mouseY=" + mouseY, 200, 26);
 
 		g.setColor(Color.WHITE);
 		g.setFont(Resources.FONT);
+		FontMetrics metrics = g.getFontMetrics();
 
 		if (mode == CRASHED) {
 			// Draw the score
-			int scoreLen = (int) g.getFontMetrics().getStringBounds(Integer.toString(score), g).getWidth();
+			int scoreLen = (int) metrics.getStringBounds(Integer.toString(score), g).getWidth();
 			int scoreStart = 415 - scoreLen;
 			g.drawString(Integer.toString(score), scoreStart, 325);
 
 			// Draw the high score
-			int highScoreLen = (int) g.getFontMetrics().getStringBounds(Integer.toString(highScore), g).getWidth();
+			int highScoreLen = (int) metrics.getStringBounds(Integer.toString(highScore), g).getWidth();
 			int highScoreStart = 415 - highScoreLen;
 			g.drawString(Integer.toString(highScore), highScoreStart, 400);
 
@@ -142,11 +144,16 @@ public class FlappyBirdGame extends AnimationPanel {
 			} else if (highScore >= 10) {
 				g.drawImage(Resources.BRONZE_MEDAL, 88, 300, 93, 91, this);
 			}
-
 		} else {
-			int scoreLen = (int) g.getFontMetrics().getStringBounds(Integer.toString(score), g).getWidth();
+			// Draw the score
+			int scoreLen = (int) metrics.getStringBounds(Integer.toString(score), g).getWidth();
 			int start = FRAME_WIDTH / 2 - scoreLen / 2;
-			g.drawString(Integer.toString(score), start, 50);
+			g.drawString(Integer.toString(score), start, 55);
+
+			// Draw the Get Ready screen
+			if (mode == READY) {
+				g.drawImage(Resources.READY_IMAGE, 84, 160, 330, 87, this);
+			}
 		}
 
 		return g;

@@ -18,6 +18,7 @@ public class Resources {
 	public static Image PIPE_IMAGE;
 	public static Image BACKDROP_IMAGE;
 	public static Image GROUND_IMAGE;
+	public static Image READY_IMAGE;
 
 	public static Image GAME_OVER_SCREEN;
 	public static Image BRONZE_MEDAL;
@@ -33,6 +34,7 @@ public class Resources {
 			PIPE_IMAGE = ImageIO.read(new File("src/resources/images/pipes.png"));
 			BACKDROP_IMAGE = ImageIO.read(new File("src/resources/images/backdrop.jpg"));
 			GROUND_IMAGE = ImageIO.read(new File("src/resources/images/ground.jpg"));
+			READY_IMAGE = ImageIO.read(new File("src/resources/images/get_ready.png"));
 
 			GAME_OVER_SCREEN = ImageIO.read(new File("src/resources/images/game_over.png"));
 			BRONZE_MEDAL = ImageIO.read(new File("src/resources/images/bronze_medal.jpg"));
