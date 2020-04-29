@@ -4,7 +4,12 @@ import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -78,6 +83,60 @@ public class Resources {
 			e.printStackTrace();
 		}
 
+	}
+
+	/**
+	 * Reads the high score saved in the text file.
+	 * 
+	 * @return the high score
+	 */
+	public static int readHighScore() {
+		File file = new File("src/resources/high_score.txt");
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader(file));
+			String highScore = reader.readLine();
+			reader.close();
+			return Integer.parseInt(highScore);
+		} catch (FileNotFoundException e) {
+			try {
+				file.createNewFile();
+				BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+				writer.write('0');
+				writer.close();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			return 0;
+		} catch (NumberFormatException e) {
+			try {
+				BufferedWriter writer = new BufferedWriter(new FileWriter(file, false));
+				writer.write('0');
+				writer.close();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			return 0;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return 0;
+		}
+
+	}
+
+	/**
+	 * Writes the new high score to the text file.
+	 * 
+	 * @param score the new high score
+	 */
+	public static void writeHighScore(int score) {
+		File file = new File("src/resources/high_score.txt");
+		try {
+			BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+			writer.write(Integer.toString(score));
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**

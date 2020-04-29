@@ -49,8 +49,8 @@ public class FlappyBirdGame extends AnimationPanel {
 	public FlappyBirdGame() {
 		super("Flappy Bird Plus", FRAME_WIDTH + 15, FRAME_HEIGHT + 30);
 		Resources.load();
+		highScore = Resources.readHighScore();
 		score = 0;
-		highScore = 0;
 		mode = READY;
 		groundX = 0;
 		backdropX = 0;
@@ -161,7 +161,10 @@ public class FlappyBirdGame extends AnimationPanel {
 
 	public void crash() {
 		mode = CRASHED;
-		highScore = (score > highScore) ? score : highScore;
+		if (score > highScore) {
+			highScore = score;
+			Resources.writeHighScore(score);
+		}
 		playSound(Resources.HIT_SOUND);
 		playSound(Resources.DIE_SOUND);
 	}
