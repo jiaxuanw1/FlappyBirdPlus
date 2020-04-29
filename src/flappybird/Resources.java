@@ -49,7 +49,7 @@ public class Resources {
 		try {
 			BIRD_IMAGE = ImageIO.read(new File("src/resources/images/bird.png"));
 			PIPE_IMAGE = ImageIO.read(new File("src/resources/images/pipes.png"));
-			BACKDROP_IMAGE = ImageIO.read(new File("src/resources/images/backdrop.jpg"));
+			BACKDROP_IMAGE = ImageIO.read(new File("src/resources/images/backdrop.png"));
 			GROUND_IMAGE = ImageIO.read(new File("src/resources/images/ground.jpg"));
 			READY_IMAGE = ImageIO.read(new File("src/resources/images/get_ready.png"));
 
@@ -59,13 +59,13 @@ public class Resources {
 			GOLD_MEDAL = ImageIO.read(new File("src/resources/images/gold_medal.jpg"));
 			PLATINUM_MEDAL = ImageIO.read(new File("src/resources/images/platinum_medal.jpg"));
 
-			DIE_SOUND = loadAudioClip(new File("src/resources/sounds/sfx_die.wav"), -15f);
-			HIT_SOUND = loadAudioClip(new File("src/resources/sounds/sfx_hit.wav"), -15f);
-			SCORE_SOUND = loadAudioClip(new File("src/resources/sounds/sfx_point.wav"), -15f);
-			SWOOSH_SOUND = loadAudioClip(new File("src/resources/sounds/sfx_swooshing.wav"), -15f);
-			FLY_SOUND = loadAudioClip(new File("src/resources/sounds/sfx_wing.wav"), -15f);
+			DIE_SOUND = loadAudioClip(new File("src/resources/sounds/sfx_die.wav"), -15.0f);
+			HIT_SOUND = loadAudioClip(new File("src/resources/sounds/sfx_hit.wav"), -15.0f);
+			SCORE_SOUND = loadAudioClip(new File("src/resources/sounds/sfx_point.wav"), -15.0f);
+			SWOOSH_SOUND = loadAudioClip(new File("src/resources/sounds/sfx_swooshing.wav"), -15.0f);
+			FLY_SOUND = loadAudioClip(new File("src/resources/sounds/sfx_wing.wav"), -15.0f);
 
-			FONT = Font.createFont(Font.TRUETYPE_FONT, new File("src/resources/fonts/04B_19__.TTF")).deriveFont(40f);
+			FONT = Font.createFont(Font.TRUETYPE_FONT, new File("src/resources/fonts/04B_19__.TTF")).deriveFont(40.0f);
 			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 			ge.registerFont(FONT);
 		} catch (IOException e) {

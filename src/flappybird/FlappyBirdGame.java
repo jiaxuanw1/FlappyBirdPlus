@@ -26,7 +26,7 @@ public class FlappyBirdGame extends AnimationPanel {
 	private static final int FRAME_WIDTH = 500;
 	private static final int FRAME_HEIGHT = 700;
 	private static final int X_VELOCITY = -3; // must be negative to move left
-	private static final int GROUND_LEVEL = 583;
+	private static final int GROUND_LEVEL = 577;
 
 	public static final int READY = 0;
 	public static final int PLAYING = 1;
@@ -38,6 +38,7 @@ public class FlappyBirdGame extends AnimationPanel {
 	private int highScore;
 	private int mode;
 	private int groundX;
+	private double backdropX;
 	private final Rectangle bounds;
 
 	private Bird bird = new Bird();
@@ -46,12 +47,13 @@ public class FlappyBirdGame extends AnimationPanel {
 	// Constructor
 	// -------------------------------------------------------
 	public FlappyBirdGame() {
-		super("Flappy Bird", FRAME_WIDTH + 15, FRAME_HEIGHT + 30);
+		super("Flappy Bird Plus", FRAME_WIDTH + 15, FRAME_HEIGHT + 30);
 		Resources.load();
 		score = 0;
 		highScore = 0;
 		mode = READY;
 		groundX = 0;
+		backdropX = 0;
 		bounds = new Rectangle(0, 0, FRAME_WIDTH, GROUND_LEVEL);
 		pipes.add(new Pipe(bounds, X_VELOCITY));
 	}
@@ -59,8 +61,11 @@ public class FlappyBirdGame extends AnimationPanel {
 	// The renderFrame method is the one which is called each time a frame is drawn.
 	// -------------------------------------------------------
 	protected Graphics renderFrame(Graphics g) {
-		// Draw backdrop image
-		g.drawImage(Resources.BACKDROP_IMAGE, 0, 0, FRAME_WIDTH, FRAME_HEIGHT, this);
+		// Draw moving backdrop image
+		if (mode != CRASHED) {
+			backdropX = (backdropX < -240) ? 0 : backdropX + X_VELOCITY / 8.0d;
+		}
+		g.drawImage(Resources.BACKDROP_IMAGE, (int) backdropX, 0, 960, 700, this);
 
 		// Detect when the bird hits the ground
 		if (bird.getY() + bird.getHeight() >= GROUND_LEVEL && mode == PLAYING) {
