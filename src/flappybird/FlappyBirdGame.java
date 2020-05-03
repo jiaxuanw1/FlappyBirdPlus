@@ -1,6 +1,7 @@
 package flappybird;
 
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Color;
 import java.awt.FontMetrics;
@@ -14,8 +15,9 @@ import javax.sound.sampled.Clip;
 import arcade.AnimationPanel;
 
 /**
- * The {@code FlappyBirdGame} class contains the code for handling interactions
- * and drawing the graphical elements of the game Flappy Bird.
+ * The {@code FlappyBirdGame} class contains the code for game events and
+ * drawing the graphical elements of the game Flappy Bird, with a few extra
+ * features.
  * 
  * @author Jiaxuan Wang
  */
@@ -39,7 +41,10 @@ public class FlappyBirdGame extends AnimationPanel {
 	private int mode;
 	private int groundX;
 	private double backdropX;
+	private boolean newHighScore;
+
 	private final Rectangle bounds;
+	private final Rectangle restartButton;
 
 	private Bird bird = new Bird();
 	private List<Pipe> pipes = new ArrayList<Pipe>();
@@ -54,7 +59,9 @@ public class FlappyBirdGame extends AnimationPanel {
 		mode = READY;
 		groundX = 0;
 		backdropX = 0;
+		newHighScore = false;
 		bounds = new Rectangle(0, 0, FRAME_WIDTH, GROUND_LEVEL);
+		restartButton = new Rectangle(185, 450, 140, 40);
 		pipes.add(new Pipe(bounds, X_VELOCITY));
 	}
 
@@ -115,6 +122,11 @@ public class FlappyBirdGame extends AnimationPanel {
 		}
 		bird.draw(g, this);
 
+		g.setColor(Color.BLACK);
+		g.drawString("ArcadeEngine 2008", 10, 12);
+		g.drawString("frame=" + mouseX, 200, 12);
+		g.drawString("frame=" + mouseY, 200, 26);
+
 		g.setColor(Color.WHITE);
 		g.setFont(Resources.FONT);
 		FontMetrics metrics = g.getFontMetrics();
@@ -143,6 +155,11 @@ public class FlappyBirdGame extends AnimationPanel {
 			} else if (highScore >= 10) {
 				g.drawImage(Resources.BRONZE_MEDAL, 88, 300, 93, 91, this);
 			}
+
+			// Draw the "new" label if it's a new high score
+			if (newHighScore) {
+				g.drawImage(Resources.NEW_HIGH_SCORE_IMAGE, 295, 332, 53, 26, this);
+			}
 		} else {
 			// Draw the score
 			int scoreLen = (int) metrics.getStringBounds(Integer.toString(score), g).getWidth();
@@ -162,6 +179,7 @@ public class FlappyBirdGame extends AnimationPanel {
 	public void crash() {
 		mode = CRASHED;
 		if (score > highScore) {
+			newHighScore = true;
 			highScore = score;
 			Resources.writeHighScore(score);
 		}
@@ -172,6 +190,7 @@ public class FlappyBirdGame extends AnimationPanel {
 	public void restart() {
 		score = 0;
 		mode = READY;
+		newHighScore = false;
 		bird.reset();
 		pipes.clear();
 		pipes.add(new Pipe(bounds, X_VELOCITY));
@@ -182,7 +201,8 @@ public class FlappyBirdGame extends AnimationPanel {
 	// Respond to Mouse Events
 	// -------------------------------------------------------
 	public void mouseClicked(MouseEvent e) {
-		if (mode == CRASHED) {
+		Point clickPoint = e.getPoint();
+		if (restartButton.contains(clickPoint) && mode == CRASHED) {
 			restart();
 		}
 	}

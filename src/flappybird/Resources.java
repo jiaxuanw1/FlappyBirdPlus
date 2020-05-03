@@ -34,6 +34,7 @@ public class Resources {
 	public static Image READY_IMAGE;
 
 	public static Image GAME_OVER_SCREEN;
+	public static Image NEW_HIGH_SCORE_IMAGE;
 	public static Image BRONZE_MEDAL;
 	public static Image SILVER_MEDAL;
 	public static Image GOLD_MEDAL;
@@ -59,6 +60,7 @@ public class Resources {
 			READY_IMAGE = ImageIO.read(new File("src/resources/images/get_ready.png"));
 
 			GAME_OVER_SCREEN = ImageIO.read(new File("src/resources/images/game_over.png"));
+			NEW_HIGH_SCORE_IMAGE = ImageIO.read(new File("src/resources/images/new_highscore.jpg"));
 			BRONZE_MEDAL = ImageIO.read(new File("src/resources/images/bronze_medal.jpg"));
 			SILVER_MEDAL = ImageIO.read(new File("src/resources/images/silver_medal.jpg"));
 			GOLD_MEDAL = ImageIO.read(new File("src/resources/images/gold_medal.jpg"));
@@ -120,7 +122,6 @@ public class Resources {
 			e.printStackTrace();
 			return 0;
 		}
-
 	}
 
 	/**
