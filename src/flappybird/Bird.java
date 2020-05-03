@@ -1,6 +1,7 @@
 package flappybird;
 
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.image.ImageObserver;
 
@@ -13,10 +14,16 @@ public class Bird {
 
 	private final int width = 55;
 	private final int height = 39;
+	private final Image[] images = new Image[] { 
+			Resources.BIRD_WING_UP, 
+			Resources.BIRD_WING_MID, 
+			Resources.BIRD_WING_DOWN, 
+			Resources.BIRD_WING_MID };
 
 	private double x;
 	private double y;
 	private double yVel;
+	private int imageIndex;
 
 	/**
 	 * Constructs a new {@code Bird} object hovering in the middle of the window, in 
@@ -66,6 +73,7 @@ public class Bird {
 		x = 140;
 		y = 310;
 		yVel = 0;
+		imageIndex = 0;
 	}
 
 	/**
@@ -74,7 +82,7 @@ public class Bird {
 	 * 
 	 * @param screenBounds a {@code Rectangle} specifying the boundaries
 	 */
-	public void animate(Rectangle screenBounds) {
+	public void update(Rectangle screenBounds) {
 		yVel += 0.7;
 		y += yVel;
 
@@ -86,7 +94,14 @@ public class Bird {
 			yVel = 0;
 		}
 	}
-
+	
+	/**
+	 * Updates the image index in order to animate the bird flapping its wings.
+	 */
+	public void animate() {
+		imageIndex = (imageIndex >= images.length - 1) ? 0 : imageIndex + 1;
+	}
+	
 	/**
 	 * Draws this {@code Bird} object to the screen.
 	 * 
@@ -94,7 +109,7 @@ public class Bird {
 	 * @param io the {@code ImageObserver} to be notified
 	 */
 	public void draw(Graphics g, ImageObserver io) {
-		g.drawImage(Resources.BIRD_IMAGE, (int) x, (int) y, width, height, io);
+		g.drawImage(images[imageIndex], (int) x, (int) y, width, height, io);
 	}
 
 }

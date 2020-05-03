@@ -27,7 +27,10 @@ public class Resources {
 
 	// Resources
 	// -------------------------------------------------------
-	public static Image BIRD_IMAGE;
+	public static Image BIRD_WING_UP;
+	public static Image BIRD_WING_MID;
+	public static Image BIRD_WING_DOWN;
+
 	public static Image PIPE_IMAGE;
 	public static Image BACKDROP_IMAGE;
 	public static Image GROUND_IMAGE;
@@ -53,7 +56,10 @@ public class Resources {
 	 */
 	public static void load() {
 		try {
-			BIRD_IMAGE = ImageIO.read(new File("src/resources/images/bird.png"));
+			BIRD_WING_UP = ImageIO.read(new File("src/resources/images/bird1.png"));
+			BIRD_WING_MID = ImageIO.read(new File("src/resources/images/bird2.png"));
+			BIRD_WING_DOWN = ImageIO.read(new File("src/resources/images/bird3.png"));
+
 			PIPE_IMAGE = ImageIO.read(new File("src/resources/images/pipes.png"));
 			BACKDROP_IMAGE = ImageIO.read(new File("src/resources/images/backdrop.png"));
 			GROUND_IMAGE = ImageIO.read(new File("src/resources/images/ground.jpg"));

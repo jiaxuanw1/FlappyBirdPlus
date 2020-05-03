@@ -48,7 +48,7 @@ public class Pipe {
 	/**
 	 * Updates the position of this {@code Pipe} based on the horizontal velocity.
 	 */
-	public void animate() {
+	public void update() {
 		previousX = x;
 		x += xVel;
 	}

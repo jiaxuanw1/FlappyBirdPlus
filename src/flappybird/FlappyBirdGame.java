@@ -46,8 +46,8 @@ public class FlappyBirdGame extends AnimationPanel {
 	private final Rectangle bounds;
 	private final Rectangle restartButton;
 
-	private Bird bird = new Bird();
-	private List<Pipe> pipes = new ArrayList<Pipe>();
+	private Bird bird;
+	private List<Pipe> pipes;
 
 	// Constructor
 	// -------------------------------------------------------
@@ -62,6 +62,9 @@ public class FlappyBirdGame extends AnimationPanel {
 		newHighScore = false;
 		bounds = new Rectangle(0, 0, FRAME_WIDTH, GROUND_LEVEL);
 		restartButton = new Rectangle(185, 450, 140, 40);
+
+		bird = new Bird();
+		pipes = new ArrayList<Pipe>();
 		pipes.add(new Pipe(bounds, X_VELOCITY));
 	}
 
@@ -82,7 +85,7 @@ public class FlappyBirdGame extends AnimationPanel {
 		for (Pipe pipe : pipes) {
 			// Draw the pipes (draw these after the backdrop)
 			if (mode == PLAYING) {
-				pipe.animate();
+				pipe.update();
 			}
 			pipe.draw(g, this);
 
@@ -116,16 +119,29 @@ public class FlappyBirdGame extends AnimationPanel {
 		}
 		g.drawImage(Resources.GROUND_IMAGE, groundX, GROUND_LEVEL, this);
 
-		// Draw the bird (draw this after pipes and ground)
-		if (mode != READY) {
-			bird.animate(bounds);
+		// Draw and animate the bird (do this after pipes and ground)
+		switch (mode) {
+			case READY:
+				if (frameNumber % 7 == 0) {
+					bird.animate();
+				}
+				break;
+			case PLAYING:
+				if (frameNumber % 7 == 0) {
+					bird.animate();
+				}
+				bird.update(bounds);
+				break;
+			case CRASHED:
+				bird.update(bounds);
+				break;
 		}
 		bird.draw(g, this);
 
-		g.setColor(Color.BLACK);
-		g.drawString("ArcadeEngine 2008", 10, 12);
-		g.drawString("frame=" + mouseX, 200, 12);
-		g.drawString("frame=" + mouseY, 200, 26);
+//		g.setColor(Color.BLACK);
+//		g.drawString("ArcadeEngine 2008", 10, 12);
+//		g.drawString("frame=" + mouseX, 200, 12);
+//		g.drawString("frame=" + mouseY, 200, 26);
 
 		g.setColor(Color.WHITE);
 		g.setFont(Resources.FONT);
@@ -202,6 +218,7 @@ public class FlappyBirdGame extends AnimationPanel {
 	// -------------------------------------------------------
 	public void mouseClicked(MouseEvent e) {
 		Point clickPoint = e.getPoint();
+
 		if (restartButton.contains(clickPoint) && mode == CRASHED) {
 			restart();
 		}
