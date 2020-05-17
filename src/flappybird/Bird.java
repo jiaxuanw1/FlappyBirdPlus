@@ -99,7 +99,7 @@ public class Bird {
 	 * Updates the image index in order to animate the bird flapping its wings.
 	 */
 	public void animate() {
-		imageIndex = (imageIndex >= images.length - 1) ? 0 : imageIndex + 1;
+		imageIndex = (imageIndex + 1) % images.length;
 	}
 	
 	/**

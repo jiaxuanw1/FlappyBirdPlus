@@ -42,6 +42,8 @@ public class FlappyBirdGame extends AnimationPanel {
 	private int groundX;
 	private double backdropX;
 	private boolean newHighScore;
+	private boolean easterEggsEnabled;
+	private StringBuilder keySequence;
 
 	private final Rectangle bounds;
 	private final Rectangle restartButton;
@@ -60,6 +62,9 @@ public class FlappyBirdGame extends AnimationPanel {
 		groundX = 0;
 		backdropX = 0;
 		newHighScore = false;
+		easterEggsEnabled = false;
+		keySequence = new StringBuilder();
+
 		bounds = new Rectangle(0, 0, FRAME_WIDTH, GROUND_LEVEL);
 		restartButton = new Rectangle(185, 450, 140, 40);
 
@@ -72,10 +77,17 @@ public class FlappyBirdGame extends AnimationPanel {
 	// -------------------------------------------------------
 	protected Graphics renderFrame(Graphics g) {
 		// Draw moving backdrop image
-		if (mode != CRASHED) {
-			backdropX = (backdropX < -240) ? 0 : backdropX + X_VELOCITY / 8.0d;
+		if (easterEggsEnabled) {
+			if (mode != CRASHED) {
+				backdropX = (backdropX < -320) ? 0 : backdropX + X_VELOCITY / 8.0;
+			}
+			g.drawImage(Resources.ALT_BACKDROP_IMAGE, (int) backdropX, 0, this);
+		} else {
+			if (mode != CRASHED) {
+				backdropX = (backdropX < -240) ? 0 : backdropX + X_VELOCITY / 8.0d;
+			}
+			g.drawImage(Resources.BACKDROP_IMAGE, (int) backdropX, 0, this);
 		}
-		g.drawImage(Resources.BACKDROP_IMAGE, (int) backdropX, 0, 960, 700, this);
 
 		// Detect when the bird hits the ground
 		if (bird.getY() + bird.getHeight() >= GROUND_LEVEL && mode == PLAYING) {
@@ -114,10 +126,17 @@ public class FlappyBirdGame extends AnimationPanel {
 		}
 
 		// Draw the moving ground (draw this after the pipes)
-		if (mode != CRASHED) {
-			groundX = (groundX < -23) ? 0 : groundX + X_VELOCITY;
+		if (easterEggsEnabled) {
+			if (mode != CRASHED) {
+				groundX = (groundX < -33) ? 0 : groundX + X_VELOCITY;
+			}
+			g.drawImage(Resources.ALT_GROUND_IMAGE, groundX, GROUND_LEVEL, this);
+		} else {
+			if (mode != CRASHED) {
+				groundX = (groundX < -23) ? 0 : groundX + X_VELOCITY;
+			}
+			g.drawImage(Resources.GROUND_IMAGE, groundX, GROUND_LEVEL, this);
 		}
-		g.drawImage(Resources.GROUND_IMAGE, groundX, GROUND_LEVEL, this);
 
 		// Draw and animate the bird (do this after pipes and ground)
 		switch (mode) {
@@ -235,6 +254,20 @@ public class FlappyBirdGame extends AnimationPanel {
 			bird.fly();
 			mode = PLAYING;
 			playSound(Resources.FLY_SOUND);
+		}
+		// Restart the sequence when j is typed
+		else if (c == 'j') {
+			keySequence = new StringBuilder("j");
+		}
+		// Add the typed letter to the sequence
+		else {
+			keySequence.append(c);
+		}
+
+		// Toggle hidden features
+		if (keySequence.toString().equals("jiaxuan")) {
+			easterEggsEnabled = !easterEggsEnabled;
+			keySequence.setLength(0);
 		}
 	}
 
