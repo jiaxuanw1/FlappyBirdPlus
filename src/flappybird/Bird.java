@@ -1,5 +1,6 @@
 package flappybird;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
@@ -13,20 +14,33 @@ import java.awt.image.ImageObserver;
 public class Bird {
 
 	private final int width = 55;
-	private final int height = 39;
-	private final Image[] images = new Image[] { 
-			Resources.BIRD_WING_UP, 
-			Resources.BIRD_WING_MID, 
-			Resources.BIRD_WING_DOWN, 
-			Resources.BIRD_WING_MID };
+	private final int height = 38;
+	private final Image[] yellowImages = new Image[] { 
+				Resources.BIRD_YELLOW_WING_MID, 
+				Resources.BIRD_YELLOW_WING_DOWN,
+				Resources.BIRD_YELLOW_WING_MID, 
+				Resources.BIRD_YELLOW_WING_UP };
+
+	private final Image[] blueImages = new Image[] { 
+				Resources.BIRD_BLUE_WING_MID, 
+				Resources.BIRD_BLUE_WING_DOWN,
+				Resources.BIRD_BLUE_WING_MID, 
+				Resources.BIRD_BLUE_WING_UP };
+
+	private final Image[] redImages = new Image[] { 
+				Resources.BIRD_RED_WING_MID, 
+				Resources.BIRD_RED_WING_DOWN,
+				Resources.BIRD_RED_WING_MID,
+				Resources.BIRD_RED_WING_UP };
 
 	private double x;
 	private double y;
 	private double yVel;
 	private int imageIndex;
+	private Color color;
 
 	/**
-	 * Constructs a new {@code Bird} object hovering in the middle of the window, in 
+	 * Constructs a new {@code Bird} object hovering in the middle of the window, in
 	 * the ready phase.
 	 */
 	public Bird() {
@@ -45,6 +59,7 @@ public class Bird {
 	// -------------------------------------------------------
 	public void setX(int x) { this.x = x; }
 	public void setY(int y) { this.y = y; }
+	public void setColor(Color color) { this.color = color; }
 
 	/**
 	 * Returns whether this {@code Bird} object's boundaries intersect the specified
@@ -66,7 +81,7 @@ public class Bird {
 	}
 
 	/**
-	 * Resets this {@code Bird} to its original state, hovering in the middle of the 
+	 * Resets this {@code Bird} to its original state, hovering in the middle of the
 	 * window in the ready phase.
 	 */
 	public void reset() {
@@ -94,14 +109,14 @@ public class Bird {
 			yVel = 0;
 		}
 	}
-	
+
 	/**
 	 * Updates the image index in order to animate the bird flapping its wings.
 	 */
 	public void animate() {
-		imageIndex = (imageIndex + 1) % images.length;
+		imageIndex = (imageIndex + 1) % yellowImages.length;
 	}
-	
+
 	/**
 	 * Draws this {@code Bird} object to the screen.
 	 * 
@@ -109,7 +124,13 @@ public class Bird {
 	 * @param io the {@code ImageObserver} to be notified
 	 */
 	public void draw(Graphics g, ImageObserver io) {
-		g.drawImage(images[imageIndex], (int) x, (int) y, width, height, io);
+		if (color.equals(Color.BLUE)) {
+			g.drawImage(blueImages[imageIndex], (int) x, (int) y, width, height, io);
+		} else if (color.equals(Color.RED)) {
+			g.drawImage(redImages[imageIndex], (int) x, (int) y, width, height, io);
+		} else {
+			g.drawImage(yellowImages[imageIndex], (int) x, (int) y, width, height, io);
+		}
 	}
 
 }

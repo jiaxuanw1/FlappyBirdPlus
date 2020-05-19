@@ -46,12 +46,14 @@ public class FlappyBirdGame extends AnimationPanel {
 	private int groundX;
 	private double backdropX;
 	private boolean newHighScore;
-	private boolean darkEnabled;
+	private boolean newGraphicsEnabled;
+	private boolean dark;
 	private StringBuilder keySequence;
 
 	private final Rectangle bounds;
 	private final Rectangle restartButton;
 
+	private Resources resources;
 	private Bird bird;
 	private List<Pipe> pipes;
 	private Mario mario;
@@ -63,20 +65,23 @@ public class FlappyBirdGame extends AnimationPanel {
 	// -------------------------------------------------------
 	public FlappyBirdGame() {
 		super("Flappy Bird Plus", FRAME_WIDTH + 15, FRAME_HEIGHT + 30);
-		Resources.load();
-		highScore = Resources.readHighScore();
+		resources = new Resources();
+		resources.load();
+		highScore = resources.readHighScore();
 		score = 0;
 		mode = READY;
 		groundX = 0;
 		backdropX = 0;
 		newHighScore = false;
-		darkEnabled = false;
+		newGraphicsEnabled = true;
+		dark = Math.random() < 0.5 ? true : false;
 		keySequence = new StringBuilder();
 
 		bounds = new Rectangle(0, 0, FRAME_WIDTH, GROUND_LEVEL);
 		restartButton = new Rectangle(185, 450, 140, 40);
 
 		bird = new Bird();
+		bird.setColor(randomBirdColor());
 		pipes = new ArrayList<Pipe>();
 		pipes.add(new Pipe(bounds, X_VELOCITY));
 		marioPipe = new Pipe(bounds, X_VELOCITY, -330);
@@ -89,11 +94,11 @@ public class FlappyBirdGame extends AnimationPanel {
 	// -------------------------------------------------------
 	protected Graphics renderFrame(Graphics g) {
 		// Draw moving backdrop image
-		if (darkEnabled) {
+		if (newGraphicsEnabled && dark) {
 			if (mode != CRASHED) {
 				backdropX = (backdropX < -320) ? 0 : backdropX + X_VELOCITY / 8.0d;
 			}
-			g.drawImage(Resources.ALT_BACKDROP_IMAGE, (int) backdropX, 0, this);
+			g.drawImage(Resources.DARK_BACKDROP_IMAGE, (int) backdropX, 0, this);
 		} else {
 			if (mode != CRASHED) {
 				backdropX = (backdropX < -240) ? 0 : backdropX + X_VELOCITY / 8.0d;
@@ -151,7 +156,7 @@ public class FlappyBirdGame extends AnimationPanel {
 			if (mode == PLAYING || mode == MARIO) {
 				pipe.update();
 			}
-			pipe.draw(g, this, darkEnabled);
+			pipe.draw(g, this, newGraphicsEnabled);
 
 			// Increment the score when the bird passes between a pair of pipes
 			if (pipe.getPreviousX() > bird.getX() && pipe.getX() <= bird.getX() && (mode == PLAYING || mode == MARIO)) {
@@ -195,11 +200,11 @@ public class FlappyBirdGame extends AnimationPanel {
 		}
 
 		// Draw the moving ground (draw this after the pipes)
-		if (darkEnabled) {
+		if (newGraphicsEnabled) {
 			if (mode != CRASHED) {
 				groundX = (groundX < -33) ? 0 : groundX + X_VELOCITY;
 			}
-			g.drawImage(Resources.ALT_GROUND_IMAGE, groundX, GROUND_LEVEL, this);
+			g.drawImage(Resources.NEW_GROUND_IMAGE, groundX, GROUND_LEVEL, this);
 		} else {
 			if (mode != CRASHED) {
 				groundX = (groundX < -23) ? 0 : groundX + X_VELOCITY;
@@ -208,6 +213,9 @@ public class FlappyBirdGame extends AnimationPanel {
 		}
 
 		// Draw and animate the bird (do this after pipes and ground)
+		if (!newGraphicsEnabled) {
+			bird.setColor(Color.YELLOW);
+		}
 		switch (mode) {
 			case READY:
 				if (frameNumber % 7 == 0) {
@@ -263,7 +271,7 @@ public class FlappyBirdGame extends AnimationPanel {
 
 			// Draw the "new" label if it's a new high score
 			if (newHighScore) {
-				g.drawImage(Resources.NEW_HIGH_SCORE_IMAGE, 295, 332, 53, 26, this);
+				g.drawImage(Resources.NEW_BEST_IMAGE, 295, 332, 53, 26, this);
 			}
 		} else {
 			// Draw the score
@@ -286,7 +294,7 @@ public class FlappyBirdGame extends AnimationPanel {
 		if (score > highScore) {
 			newHighScore = true;
 			highScore = score;
-			Resources.writeHighScore(score);
+			resources.writeHighScore(score);
 		}
 		playSound(Resources.DIE_SOUND);
 		playSound(Resources.HIT_SOUND);
@@ -306,9 +314,22 @@ public class FlappyBirdGame extends AnimationPanel {
 		mode = READY;
 		newHighScore = false;
 		bird.reset();
+		bird.setColor(randomBirdColor());
 		pipes.clear();
 		pipes.add(new Pipe(bounds, X_VELOCITY));
 		playSound(Resources.SWOOSH_SOUND);
+	}
+
+	public Color randomBirdColor() {
+		int random = (int) (Math.random() * 3);
+		switch (random) {
+			case 0:
+				return Color.YELLOW;
+			case 1:
+				return Color.BLUE;
+			default:
+				return Color.RED;
+		}
 	}
 
 	// -------------------------------------------------------
@@ -345,9 +366,9 @@ public class FlappyBirdGame extends AnimationPanel {
 			keySequence.append(c);
 		}
 
-		// Toggle dark mode
+		// Toggle old/new graphics
 		if (keySequence.toString().equals("jiaxuan")) {
-			darkEnabled = !darkEnabled;
+			newGraphicsEnabled = !newGraphicsEnabled;
 			keySequence.setLength(0);
 		}
 	}

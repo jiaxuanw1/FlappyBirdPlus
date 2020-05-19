@@ -8,7 +8,7 @@ import javax.sound.sampled.Clip;
 
 /**
  * Code for the character of Mario, who makes his appearance in this version of
- * Flappy Bird when easter eggs are enabled.
+ * Flappy Bird every 50 points scored by the player.
  * 
  * @author Jiaxuan Wang
  */

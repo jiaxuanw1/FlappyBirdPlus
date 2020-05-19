@@ -11,6 +11,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 
 import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioInputStream;
@@ -27,20 +29,26 @@ public class Resources {
 
 	// Resources
 	// -------------------------------------------------------
-	public static Image BIRD_WING_UP;
-	public static Image BIRD_WING_MID;
-	public static Image BIRD_WING_DOWN;
+	public static Image BIRD_YELLOW_WING_MID;
+	public static Image BIRD_YELLOW_WING_DOWN;
+	public static Image BIRD_YELLOW_WING_UP;
+	public static Image BIRD_BLUE_WING_MID;
+	public static Image BIRD_BLUE_WING_DOWN;
+	public static Image BIRD_BLUE_WING_UP;
+	public static Image BIRD_RED_WING_MID;
+	public static Image BIRD_RED_WING_DOWN;
+	public static Image BIRD_RED_WING_UP;
 
 	public static Image PIPE_IMAGE;
 	public static Image BACKDROP_IMAGE;
 	public static Image GROUND_IMAGE;
 	public static Image READY_IMAGE;
 	public static Image GAME_OVER_SCREEN;
-	public static Image NEW_HIGH_SCORE_IMAGE;
+	public static Image NEW_BEST_IMAGE;
 
-	public static Image ALT_PIPE_IMAGE;
-	public static Image ALT_BACKDROP_IMAGE;
-	public static Image ALT_GROUND_IMAGE;
+	public static Image DARK_BACKDROP_IMAGE;
+	public static Image NEW_PIPE_IMAGE;
+	public static Image NEW_GROUND_IMAGE;
 
 	public static Image BRONZE_MEDAL;
 	public static Image SILVER_MEDAL;
@@ -67,44 +75,53 @@ public class Resources {
 	/**
 	 * Loads all of the resources for use in the project.
 	 */
-	public static void load() {
+	public void load() {
 		try {
-			BIRD_WING_UP = ImageIO.read(new File("src/resources/images/bird1.png"));
-			BIRD_WING_MID = ImageIO.read(new File("src/resources/images/bird2.png"));
-			BIRD_WING_DOWN = ImageIO.read(new File("src/resources/images/bird3.png"));
+			BIRD_YELLOW_WING_MID = ImageIO.read(getClass().getClassLoader().getResource("images/bird_yellow_1.png"));
+			BIRD_YELLOW_WING_DOWN = ImageIO.read(getClass().getClassLoader().getResource("images/bird_yellow_2.png"));
+			BIRD_YELLOW_WING_UP = ImageIO.read(getClass().getClassLoader().getResource("images/bird_yellow_3.png"));
+			BIRD_BLUE_WING_MID = ImageIO.read(getClass().getClassLoader().getResource("images/bird_blue_1.png"));
+			BIRD_BLUE_WING_DOWN = ImageIO.read(getClass().getClassLoader().getResource("images/bird_blue_2.png"));
+			BIRD_BLUE_WING_UP = ImageIO.read(getClass().getClassLoader().getResource("images/bird_blue_3.png"));
+			BIRD_RED_WING_MID = ImageIO.read(getClass().getClassLoader().getResource("images/bird_red_1.png"));
+			BIRD_RED_WING_DOWN = ImageIO.read(getClass().getClassLoader().getResource("images/bird_red_2.png"));
+			BIRD_RED_WING_UP = ImageIO.read(getClass().getClassLoader().getResource("images/bird_red_3.png"));
 
-			PIPE_IMAGE = ImageIO.read(new File("src/resources/images/pipes.png"));
-			BACKDROP_IMAGE = ImageIO.read(new File("src/resources/images/backdrop.png"));
-			GROUND_IMAGE = ImageIO.read(new File("src/resources/images/ground.jpg"));
-			READY_IMAGE = ImageIO.read(new File("src/resources/images/get_ready.png"));
-			GAME_OVER_SCREEN = ImageIO.read(new File("src/resources/images/game_over.png"));
-			NEW_HIGH_SCORE_IMAGE = ImageIO.read(new File("src/resources/images/new_highscore.jpg"));
+			// PIPE_IMAGE = ImageIO.read(new File("images/pipes.png"));
+			PIPE_IMAGE = ImageIO.read(getClass().getClassLoader().getResource("images/pipes.png"));
+			BACKDROP_IMAGE = ImageIO.read(getClass().getClassLoader().getResource("images/backdrop.png"));
+			GROUND_IMAGE = ImageIO.read(getClass().getClassLoader().getResource("images/ground.jpg"));
+			READY_IMAGE = ImageIO.read(getClass().getClassLoader().getResource("images/get_ready.png"));
+			GAME_OVER_SCREEN = ImageIO.read(getClass().getClassLoader().getResource("images/game_over.png"));
+			NEW_BEST_IMAGE = ImageIO.read(getClass().getClassLoader().getResource("images/new_highscore.jpg"));
 
-			ALT_PIPE_IMAGE = ImageIO.read(new File("src/resources/images/alt_pipes.png"));
-			ALT_BACKDROP_IMAGE = ImageIO.read(new File("src/resources/images/alt_backdrop.png"));
-			ALT_GROUND_IMAGE = ImageIO.read(new File("src/resources/images/alt_ground.png"));
+			DARK_BACKDROP_IMAGE = ImageIO.read(getClass().getClassLoader().getResource("images/new_backdrop.png"));
+			NEW_PIPE_IMAGE = ImageIO.read(getClass().getClassLoader().getResource("images/new_pipes.png"));
+			NEW_GROUND_IMAGE = ImageIO.read(getClass().getClassLoader().getResource("images/new_ground.png"));
 
-			BRONZE_MEDAL = ImageIO.read(new File("src/resources/images/bronze_medal.jpg"));
-			SILVER_MEDAL = ImageIO.read(new File("src/resources/images/silver_medal.jpg"));
-			GOLD_MEDAL = ImageIO.read(new File("src/resources/images/gold_medal.jpg"));
-			PLATINUM_MEDAL = ImageIO.read(new File("src/resources/images/platinum_medal.jpg"));
+			BRONZE_MEDAL = ImageIO.read(getClass().getClassLoader().getResource("images/bronze_medal.jpg"));
+			SILVER_MEDAL = ImageIO.read(getClass().getClassLoader().getResource("images/silver_medal.jpg"));
+			GOLD_MEDAL = ImageIO.read(getClass().getClassLoader().getResource("images/gold_medal.jpg"));
+			PLATINUM_MEDAL = ImageIO.read(getClass().getClassLoader().getResource("images/platinum_medal.jpg"));
 
-			MARIO_STANDING = ImageIO.read(new File("src/resources/images/mario_standing.png"));
-			MARIO_JUMPING = ImageIO.read(new File("src/resources/images/mario_jumping.png"));
-			MARIO_THROWING = ImageIO.read(new File("src/resources/images/mario_throwing.png"));
-			FIREBALL_IMAGE = ImageIO.read(new File("src/resources/images/fireball.png"));
+			MARIO_STANDING = ImageIO.read(getClass().getClassLoader().getResource("images/mario_standing.png"));
+			MARIO_JUMPING = ImageIO.read(getClass().getClassLoader().getResource("images/mario_jumping.png"));
+			MARIO_THROWING = ImageIO.read(getClass().getClassLoader().getResource("images/mario_throwing.png"));
+			FIREBALL_IMAGE = ImageIO.read(getClass().getClassLoader().getResource("images/fireball.png"));
 
-			DIE_SOUND = loadAudioClip(new File("src/resources/sounds/sfx_die.wav"), -15.0f);
-			HIT_SOUND = loadAudioClip(new File("src/resources/sounds/sfx_hit.wav"), -15.0f);
-			SCORE_SOUND = loadAudioClip(new File("src/resources/sounds/sfx_point.wav"), -15.0f);
-			SWOOSH_SOUND = loadAudioClip(new File("src/resources/sounds/sfx_swooshing.wav"), -15.0f);
-			FLY_SOUND = loadAudioClip(new File("src/resources/sounds/sfx_wing.wav"), -15.0f);
+			DIE_SOUND = loadAudioClip(getClass().getClassLoader().getResource("sounds/sfx_die.wav"), -15.0f);
+			HIT_SOUND = loadAudioClip(getClass().getClassLoader().getResource("sounds/sfx_hit.wav"), -15.0f);
+			SCORE_SOUND = loadAudioClip(getClass().getClassLoader().getResource("sounds/sfx_point.wav"), -15.0f);
+			SWOOSH_SOUND = loadAudioClip(getClass().getClassLoader().getResource("sounds/sfx_swooshing.wav"), -15.0f);
+			FLY_SOUND = loadAudioClip(getClass().getClassLoader().getResource("sounds/sfx_wing.wav"), -15.0f);
 
-			MARIO_FIREBALL_SOUND = loadAudioClip(new File("src/resources/sounds/smb3_fireball.wav"), -15.0f);
-			MARIO_JUMP_SOUND = loadAudioClip(new File("src/resources/sounds/smb3_jump.wav"), -15.0f);
-			MARIO_PIPE_SOUND = loadAudioClip(new File("src/resources/sounds/smb3_pipe.wav"), -15.0f);
+			MARIO_FIREBALL_SOUND = loadAudioClip(getClass().getClassLoader().getResource("sounds/smb3_fireball.wav"),
+					-15.0f);
+			MARIO_JUMP_SOUND = loadAudioClip(getClass().getClassLoader().getResource("sounds/smb3_jump.wav"), -15.0f);
+			MARIO_PIPE_SOUND = loadAudioClip(getClass().getClassLoader().getResource("sounds/smb3_pipe.wav"), -15.0f);
 
-			FONT = Font.createFont(Font.TRUETYPE_FONT, new File("src/resources/fonts/04B_19__.TTF")).deriveFont(40.0f);
+			InputStream is = getClass().getResourceAsStream("/fonts/04B_19__.TTF");
+			FONT = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(40.0f);
 			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 			ge.registerFont(FONT);
 		} catch (IOException e) {
@@ -124,8 +141,8 @@ public class Resources {
 	 * 
 	 * @return the high score
 	 */
-	public static int readHighScore() {
-		File file = new File("src/resources/high_score.txt");
+	public int readHighScore() {
+		File file = new File("high_score.txt");
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader(file));
 			String highScore = reader.readLine();
@@ -161,8 +178,8 @@ public class Resources {
 	 * 
 	 * @param score the new high score
 	 */
-	public static void writeHighScore(int score) {
-		File file = new File("src/resources/high_score.txt");
+	public void writeHighScore(int score) {
+		File file = new File("high_score.txt");
 		try {
 			BufferedWriter writer = new BufferedWriter(new FileWriter(file));
 			writer.write(Integer.toString(score));
@@ -182,9 +199,9 @@ public class Resources {
 	 * @throws UnsupportedAudioFileException
 	 * @throws LineUnavailableException
 	 */
-	private static Clip loadAudioClip(File file, float gain)
+	private static Clip loadAudioClip(URL url, float gain)
 			throws UnsupportedAudioFileException, IOException, LineUnavailableException {
-		AudioInputStream ais = AudioSystem.getAudioInputStream(file);
+		AudioInputStream ais = AudioSystem.getAudioInputStream(url);
 		Clip clip = AudioSystem.getClip();
 		clip.open(ais);
 		FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);

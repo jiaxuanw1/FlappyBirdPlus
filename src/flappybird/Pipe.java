@@ -91,13 +91,13 @@ public class Pipe {
 	/**
 	 * Draws this {@code Pipe} object to the screen.
 	 * 
-	 * @param g  the {@code Graphics} object to be drawn on
-	 * @param io the {@code ImageObserver} to be notified
-	 * @param dark whether to draw the dark graphics
+	 * @param g           the {@code Graphics} object to be drawn on
+	 * @param io          the {@code ImageObserver} to be notified
+	 * @param newGraphics whether to draw the new graphics
 	 */
-	public void draw(Graphics g, ImageObserver io, boolean dark) {
-		if (dark) {
-			g.drawImage(Resources.ALT_PIPE_IMAGE, x, y, width, height, io);
+	public void draw(Graphics g, ImageObserver io, boolean newGraphics) {
+		if (newGraphics) {
+			g.drawImage(Resources.NEW_PIPE_IMAGE, x, y, width, height, io);
 		} else {
 			g.drawImage(Resources.PIPE_IMAGE, x, y, width, height, io);
 		}
