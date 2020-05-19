@@ -51,7 +51,7 @@ public class FlappyBirdGame extends AnimationPanel {
 	private StringBuilder keySequence;
 
 	private final Rectangle bounds;
-	private final Rectangle restartButton;
+	private Rectangle restartButton;
 
 	private Resources resources;
 	private Bird bird;
@@ -74,11 +74,11 @@ public class FlappyBirdGame extends AnimationPanel {
 		backdropX = 0;
 		newHighScore = false;
 		newGraphicsEnabled = true;
-		dark = Math.random() < 0.5 ? true : false;
+		dark = Math.random() < 0.5;
 		keySequence = new StringBuilder();
 
 		bounds = new Rectangle(0, 0, FRAME_WIDTH, GROUND_LEVEL);
-		restartButton = new Rectangle(185, 450, 140, 40);
+		restartButton = new Rectangle(158, 475, 184, 103);
 
 		bird = new Bird();
 		bird.setColor(randomBirdColor());
@@ -246,7 +246,13 @@ public class FlappyBirdGame extends AnimationPanel {
 
 		if (mode == CRASHED) {
 			// Draw the Game Over screen
-			g.drawImage(Resources.GAME_OVER_SCREEN, 50, 120, 400, 400, this);
+			if (newGraphicsEnabled) {
+				g.drawImage(Resources.GAME_OVER_TEXT, 80, 115, 340, 74, this);
+				g.drawImage(Resources.GAME_OVER_MIDDLE, 50, 230, 400, 202, this);
+				g.drawImage(Resources.REPLAY_BUTTON_IMAGE, 158, 475, 184, 103, this);
+			} else {
+				g.drawImage(Resources.GAME_OVER_SCREEN, 50, 120, 400, 400, this);
+			}
 
 			// Draw the score
 			int scoreLen = (int) metrics.getStringBounds(Integer.toString(score), g).getWidth();
@@ -279,9 +285,13 @@ public class FlappyBirdGame extends AnimationPanel {
 			int start = FRAME_WIDTH / 2 - scoreLen / 2;
 			g.drawString(Integer.toString(score), start, 55);
 
-			// Draw the Get Ready screen
+			// Draw the Get Ready text
 			if (mode == READY) {
-				g.drawImage(Resources.READY_IMAGE, 84, 160, 330, 87, this);
+				if (newGraphicsEnabled) {
+					g.drawImage(Resources.NEW_READY_TEXT, 88, 140, 325, 88, this);
+				} else {
+					g.drawImage(Resources.READY_TEXT, 84, 145, 330, 87, this);
+				}
 			}
 		}
 
@@ -313,7 +323,7 @@ public class FlappyBirdGame extends AnimationPanel {
 		score = 0;
 		mode = READY;
 		newHighScore = false;
-		dark = Math.random() < 0.5 ? true : false;
+		dark = Math.random() < 0.5;
 		bird.reset();
 		bird.setColor(randomBirdColor());
 		pipes.clear();
@@ -371,6 +381,12 @@ public class FlappyBirdGame extends AnimationPanel {
 		if (keySequence.toString().equals("jiaxuan")) {
 			newGraphicsEnabled = !newGraphicsEnabled;
 			keySequence.setLength(0);
+
+			if (newGraphicsEnabled) {
+				restartButton = new Rectangle(158, 475, 184, 103);
+			} else {
+				restartButton = new Rectangle(185, 450, 140, 40);
+			}
 		}
 	}
 
