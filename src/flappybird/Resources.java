@@ -27,6 +27,8 @@ import javax.sound.sampled.UnsupportedAudioFileException;
  */
 public class Resources {
 
+	private ClassLoader classLoader = getClass().getClassLoader();
+
 	// Resources
 	// -------------------------------------------------------
 	public static Image BIRD_YELLOW_WING_MID;
@@ -77,48 +79,46 @@ public class Resources {
 	 */
 	public void load() {
 		try {
-			BIRD_YELLOW_WING_MID = ImageIO.read(getClass().getClassLoader().getResource("images/bird_yellow_1.png"));
-			BIRD_YELLOW_WING_DOWN = ImageIO.read(getClass().getClassLoader().getResource("images/bird_yellow_2.png"));
-			BIRD_YELLOW_WING_UP = ImageIO.read(getClass().getClassLoader().getResource("images/bird_yellow_3.png"));
-			BIRD_BLUE_WING_MID = ImageIO.read(getClass().getClassLoader().getResource("images/bird_blue_1.png"));
-			BIRD_BLUE_WING_DOWN = ImageIO.read(getClass().getClassLoader().getResource("images/bird_blue_2.png"));
-			BIRD_BLUE_WING_UP = ImageIO.read(getClass().getClassLoader().getResource("images/bird_blue_3.png"));
-			BIRD_RED_WING_MID = ImageIO.read(getClass().getClassLoader().getResource("images/bird_red_1.png"));
-			BIRD_RED_WING_DOWN = ImageIO.read(getClass().getClassLoader().getResource("images/bird_red_2.png"));
-			BIRD_RED_WING_UP = ImageIO.read(getClass().getClassLoader().getResource("images/bird_red_3.png"));
+			BIRD_YELLOW_WING_MID = ImageIO.read(classLoader.getResource("images/bird_yellow_1.png"));
+			BIRD_YELLOW_WING_DOWN = ImageIO.read(classLoader.getResource("images/bird_yellow_2.png"));
+			BIRD_YELLOW_WING_UP = ImageIO.read(classLoader.getResource("images/bird_yellow_3.png"));
+			BIRD_BLUE_WING_MID = ImageIO.read(classLoader.getResource("images/bird_blue_1.png"));
+			BIRD_BLUE_WING_DOWN = ImageIO.read(classLoader.getResource("images/bird_blue_2.png"));
+			BIRD_BLUE_WING_UP = ImageIO.read(classLoader.getResource("images/bird_blue_3.png"));
+			BIRD_RED_WING_MID = ImageIO.read(classLoader.getResource("images/bird_red_1.png"));
+			BIRD_RED_WING_DOWN = ImageIO.read(classLoader.getResource("images/bird_red_2.png"));
+			BIRD_RED_WING_UP = ImageIO.read(classLoader.getResource("images/bird_red_3.png"));
 
-			// PIPE_IMAGE = ImageIO.read(new File("images/pipes.png"));
-			PIPE_IMAGE = ImageIO.read(getClass().getClassLoader().getResource("images/pipes.png"));
-			BACKDROP_IMAGE = ImageIO.read(getClass().getClassLoader().getResource("images/backdrop.png"));
-			GROUND_IMAGE = ImageIO.read(getClass().getClassLoader().getResource("images/ground.jpg"));
-			READY_IMAGE = ImageIO.read(getClass().getClassLoader().getResource("images/get_ready.png"));
-			GAME_OVER_SCREEN = ImageIO.read(getClass().getClassLoader().getResource("images/game_over.png"));
-			NEW_BEST_IMAGE = ImageIO.read(getClass().getClassLoader().getResource("images/new_highscore.jpg"));
+			PIPE_IMAGE = ImageIO.read(classLoader.getResource("images/pipes.png"));
+			BACKDROP_IMAGE = ImageIO.read(classLoader.getResource("images/backdrop.png"));
+			GROUND_IMAGE = ImageIO.read(classLoader.getResource("images/ground.jpg"));
+			READY_IMAGE = ImageIO.read(classLoader.getResource("images/get_ready.png"));
+			GAME_OVER_SCREEN = ImageIO.read(classLoader.getResource("images/game_over.png"));
+			NEW_BEST_IMAGE = ImageIO.read(classLoader.getResource("images/new_highscore.jpg"));
 
-			DARK_BACKDROP_IMAGE = ImageIO.read(getClass().getClassLoader().getResource("images/new_backdrop.png"));
-			NEW_PIPE_IMAGE = ImageIO.read(getClass().getClassLoader().getResource("images/new_pipes.png"));
-			NEW_GROUND_IMAGE = ImageIO.read(getClass().getClassLoader().getResource("images/new_ground.png"));
+			DARK_BACKDROP_IMAGE = ImageIO.read(classLoader.getResource("images/new_backdrop.png"));
+			NEW_PIPE_IMAGE = ImageIO.read(classLoader.getResource("images/new_pipes.png"));
+			NEW_GROUND_IMAGE = ImageIO.read(classLoader.getResource("images/new_ground.png"));
 
-			BRONZE_MEDAL = ImageIO.read(getClass().getClassLoader().getResource("images/bronze_medal.jpg"));
-			SILVER_MEDAL = ImageIO.read(getClass().getClassLoader().getResource("images/silver_medal.jpg"));
-			GOLD_MEDAL = ImageIO.read(getClass().getClassLoader().getResource("images/gold_medal.jpg"));
-			PLATINUM_MEDAL = ImageIO.read(getClass().getClassLoader().getResource("images/platinum_medal.jpg"));
+			BRONZE_MEDAL = ImageIO.read(classLoader.getResource("images/bronze_medal.jpg"));
+			SILVER_MEDAL = ImageIO.read(classLoader.getResource("images/silver_medal.jpg"));
+			GOLD_MEDAL = ImageIO.read(classLoader.getResource("images/gold_medal.jpg"));
+			PLATINUM_MEDAL = ImageIO.read(classLoader.getResource("images/platinum_medal.jpg"));
 
-			MARIO_STANDING = ImageIO.read(getClass().getClassLoader().getResource("images/mario_standing.png"));
-			MARIO_JUMPING = ImageIO.read(getClass().getClassLoader().getResource("images/mario_jumping.png"));
-			MARIO_THROWING = ImageIO.read(getClass().getClassLoader().getResource("images/mario_throwing.png"));
-			FIREBALL_IMAGE = ImageIO.read(getClass().getClassLoader().getResource("images/fireball.png"));
+			MARIO_STANDING = ImageIO.read(classLoader.getResource("images/mario_standing.png"));
+			MARIO_JUMPING = ImageIO.read(classLoader.getResource("images/mario_jumping.png"));
+			MARIO_THROWING = ImageIO.read(classLoader.getResource("images/mario_throwing.png"));
+			FIREBALL_IMAGE = ImageIO.read(classLoader.getResource("images/fireball.png"));
 
-			DIE_SOUND = loadAudioClip(getClass().getClassLoader().getResource("sounds/sfx_die.wav"), -15.0f);
-			HIT_SOUND = loadAudioClip(getClass().getClassLoader().getResource("sounds/sfx_hit.wav"), -15.0f);
-			SCORE_SOUND = loadAudioClip(getClass().getClassLoader().getResource("sounds/sfx_point.wav"), -15.0f);
-			SWOOSH_SOUND = loadAudioClip(getClass().getClassLoader().getResource("sounds/sfx_swooshing.wav"), -15.0f);
-			FLY_SOUND = loadAudioClip(getClass().getClassLoader().getResource("sounds/sfx_wing.wav"), -15.0f);
+			DIE_SOUND = loadAudioClip(classLoader.getResource("sounds/sfx_die.wav"), -15.0f);
+			HIT_SOUND = loadAudioClip(classLoader.getResource("sounds/sfx_hit.wav"), -15.0f);
+			SCORE_SOUND = loadAudioClip(classLoader.getResource("sounds/sfx_point.wav"), -15.0f);
+			SWOOSH_SOUND = loadAudioClip(classLoader.getResource("sounds/sfx_swooshing.wav"), -15.0f);
+			FLY_SOUND = loadAudioClip(classLoader.getResource("sounds/sfx_wing.wav"), -15.0f);
 
-			MARIO_FIREBALL_SOUND = loadAudioClip(getClass().getClassLoader().getResource("sounds/smb3_fireball.wav"),
-					-15.0f);
-			MARIO_JUMP_SOUND = loadAudioClip(getClass().getClassLoader().getResource("sounds/smb3_jump.wav"), -15.0f);
-			MARIO_PIPE_SOUND = loadAudioClip(getClass().getClassLoader().getResource("sounds/smb3_pipe.wav"), -15.0f);
+			MARIO_FIREBALL_SOUND = loadAudioClip(classLoader.getResource("sounds/smb3_fireball.wav"), -15.0f);
+			MARIO_JUMP_SOUND = loadAudioClip(classLoader.getResource("sounds/smb3_jump.wav"), -15.0f);
+			MARIO_PIPE_SOUND = loadAudioClip(classLoader.getResource("sounds/smb3_pipe.wav"), -15.0f);
 
 			InputStream is = getClass().getResourceAsStream("/fonts/04B_19__.TTF");
 			FONT = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(40.0f);
@@ -192,7 +192,7 @@ public class Resources {
 	/**
 	 * Returns a {@code Clip} containing the audio data from a {@code File}.
 	 * 
-	 * @param file the {@code File} in which the audio is stored
+	 * @param url  the {@code URL} that points to the audio file
 	 * @param gain the audio gain to apply, in decibels
 	 * @return a {@code Clip} with the audio data
 	 * @throws IOException
