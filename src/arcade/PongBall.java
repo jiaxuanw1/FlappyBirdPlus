@@ -1,3 +1,4 @@
+package arcade;
 /*
  * Code for a generic PongBall that bounces around the screen.
  * Spock - 2006ish?

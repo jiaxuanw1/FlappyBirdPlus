@@ -1,3 +1,4 @@
+package arcade;
 /*
  * Code for a generic Projectile that can move across the screen
  * Spock 2006ish?

@@ -23,16 +23,19 @@ import arcade.AnimationPanel;
  */
 public class FlappyBirdGame extends AnimationPanel {
 
+	// Modes
+	// -------------------------------------------------------
+	private static final int READY = 0;
+	private static final int PLAYING = 1;
+	private static final int CRASHED = 2;
+	private static final int MARIO = 3;
+
 	// Constants
 	// -------------------------------------------------------
 	private static final int FRAME_WIDTH = 500;
 	private static final int FRAME_HEIGHT = 700;
 	private static final int X_VELOCITY = -3; // must be negative to move left
-	private static final int GROUND_LEVEL = 577;
-
-	public static final int READY = 0;
-	public static final int PLAYING = 1;
-	public static final int CRASHED = 2;
+	public static final int GROUND_LEVEL = 577;
 
 	// Instance Variables
 	// -------------------------------------------------------
@@ -42,7 +45,7 @@ public class FlappyBirdGame extends AnimationPanel {
 	private int groundX;
 	private double backdropX;
 	private boolean newHighScore;
-	private boolean easterEggsEnabled;
+	private boolean darkEnabled;
 	private StringBuilder keySequence;
 
 	private final Rectangle bounds;
@@ -50,6 +53,10 @@ public class FlappyBirdGame extends AnimationPanel {
 
 	private Bird bird;
 	private List<Pipe> pipes;
+	private Mario mario;
+	private Pipe marioPipe;
+	private List<Fireball> fireballs;
+	private int marioStartFrame;
 
 	// Constructor
 	// -------------------------------------------------------
@@ -62,7 +69,7 @@ public class FlappyBirdGame extends AnimationPanel {
 		groundX = 0;
 		backdropX = 0;
 		newHighScore = false;
-		easterEggsEnabled = false;
+		darkEnabled = false;
 		keySequence = new StringBuilder();
 
 		bounds = new Rectangle(0, 0, FRAME_WIDTH, GROUND_LEVEL);
@@ -71,15 +78,19 @@ public class FlappyBirdGame extends AnimationPanel {
 		bird = new Bird();
 		pipes = new ArrayList<Pipe>();
 		pipes.add(new Pipe(bounds, X_VELOCITY));
+		marioPipe = new Pipe(bounds, X_VELOCITY, -330);
+		mario = new Mario(marioPipe);
+		fireballs = new ArrayList<Fireball>();
+		marioStartFrame = -9999;
 	}
 
 	// The renderFrame method is the one which is called each time a frame is drawn.
 	// -------------------------------------------------------
 	protected Graphics renderFrame(Graphics g) {
 		// Draw moving backdrop image
-		if (easterEggsEnabled) {
+		if (darkEnabled) {
 			if (mode != CRASHED) {
-				backdropX = (backdropX < -320) ? 0 : backdropX + X_VELOCITY / 8.0;
+				backdropX = (backdropX < -320) ? 0 : backdropX + X_VELOCITY / 8.0d;
 			}
 			g.drawImage(Resources.ALT_BACKDROP_IMAGE, (int) backdropX, 0, this);
 		} else {
@@ -90,33 +101,102 @@ public class FlappyBirdGame extends AnimationPanel {
 		}
 
 		// Detect when the bird hits the ground
-		if (bird.getY() + bird.getHeight() >= GROUND_LEVEL && mode == PLAYING) {
+		if (bird.getY() + bird.getHeight() >= GROUND_LEVEL && (mode == PLAYING || mode == MARIO)) {
 			crash();
+		}
+
+		if (mode == MARIO) {
+			int frameDifference = frameNumber - marioStartFrame;
+			final int f = 160;
+			final int j = f + 60;
+			switch (frameDifference) {
+				case f:
+				case f + 10:
+				case f + 20:
+				case j + 60:
+				case j + 70:
+				case j + 80:
+					fireball();
+					mario.animateThrow();
+					break;
+				case f + 5:
+				case f + 15:
+				case f + 25:
+				case j + 55:
+				case j + 65:
+				case j + 75:
+					mario.stand();
+					break;
+				case j:
+					mario.jump();
+					break;
+				case j + 130:
+					mario.finalJump();
+					break;
+			}
+
+			for (Fireball fireball : fireballs) {
+				if (bird.intersects(fireball.getBounds())) {
+					crash();
+				}
+				fireball.update();
+				fireball.draw(g, this);
+			}
+
+			// If Mario lands on the bird, Mario jumps off it and game ends
+			if (bird.intersects(mario.getBounds())) {
+				mario.jump();
+				crash();
+			}
+
+			mario.update();
+			mario.draw(g, this);
+
+			if (mario.isFinished()) {
+				mode = PLAYING;
+			}
 		}
 
 		for (Pipe pipe : pipes) {
 			// Draw the pipes (draw these after the backdrop)
-			if (mode == PLAYING) {
+			if (mode == PLAYING || mode == MARIO) {
 				pipe.update();
 			}
-			pipe.draw(g, this);
+			pipe.draw(g, this, darkEnabled);
 
 			// Increment the score when the bird passes between a pair of pipes
-			if (pipe.getPreviousX() > bird.getX() && pipe.getX() <= bird.getX() && mode == PLAYING) {
+			if (pipe.getPreviousX() > bird.getX() && pipe.getX() <= bird.getX() && (mode == PLAYING || mode == MARIO)) {
 				score++;
 				playSound(Resources.SCORE_SOUND);
+				if (score == 47) {
+					mode = MARIO;
+				}
 			}
 
 			// Detect when the bird crashes into a pipe
-			if ((bird.intersects(pipe.getUpperBound()) || bird.intersects(pipe.getLowerBound())) && mode == PLAYING) {
+			if ((bird.intersects(pipe.getUpperBound()) || bird.intersects(pipe.getLowerBound()))
+					&& (mode == PLAYING || mode == MARIO)) {
 				crash();
+			}
+
+			// Have Mario appear out of the pipe
+			if (pipe.equals(marioPipe)) {
+				if (mode == MARIO && pipe.getXVel() != 0 && pipe.getX() < FRAME_WIDTH - 185) {
+					pipe.setXVel(0);
+					mario.start();
+					marioStartFrame = frameNumber;
+				} else if (mode == PLAYING && pipe.getXVel() == 0) {
+					pipe.setXVel(X_VELOCITY);
+				}
 			}
 		}
 
 		// Add new pipe when previous pipe is far enough
 		Pipe lastPipe = pipes.get(pipes.size() - 1);
-		if (lastPipe.getX() < FRAME_WIDTH - 80 && mode == PLAYING) {
+		if (mode == PLAYING && lastPipe.getX() < FRAME_WIDTH - 80) {
 			pipes.add(new Pipe(bounds, X_VELOCITY));
+		} else if (mode == MARIO && lastPipe.getX() < FRAME_WIDTH - 200) {
+			pipes.add(marioPipe);
 		}
 
 		// Remove pipes that have gone off-screen
@@ -126,7 +206,7 @@ public class FlappyBirdGame extends AnimationPanel {
 		}
 
 		// Draw the moving ground (draw this after the pipes)
-		if (easterEggsEnabled) {
+		if (darkEnabled) {
 			if (mode != CRASHED) {
 				groundX = (groundX < -33) ? 0 : groundX + X_VELOCITY;
 			}
@@ -145,6 +225,7 @@ public class FlappyBirdGame extends AnimationPanel {
 					bird.animate();
 				}
 				break;
+			case MARIO:
 			case PLAYING:
 				if (frameNumber % 7 == 0) {
 					bird.animate();
@@ -218,8 +299,17 @@ public class FlappyBirdGame extends AnimationPanel {
 			highScore = score;
 			Resources.writeHighScore(score);
 		}
-		playSound(Resources.HIT_SOUND);
 		playSound(Resources.DIE_SOUND);
+		playSound(Resources.HIT_SOUND);
+	}
+
+	public void fireball() {
+		double dx = bird.getX() - mario.getX();
+		double dy = bird.getY() - mario.getY();
+		double dir = Math.atan2(dy, dx);
+		int vel = 10;
+		fireballs.add(new Fireball(mario.getX(), mario.getY(), vel * Math.cos(dir), vel * Math.sin(dir)));
+		mario.animateThrow();
 	}
 
 	public void restart() {
@@ -236,9 +326,9 @@ public class FlappyBirdGame extends AnimationPanel {
 	// Respond to Mouse Events
 	// -------------------------------------------------------
 	public void mouseClicked(MouseEvent e) {
-		Point clickPoint = e.getPoint();
+		Point p = e.getPoint();
 
-		if (restartButton.contains(clickPoint) && mode == CRASHED) {
+		if (restartButton.contains(p) && mode == CRASHED) {
 			restart();
 		}
 	}
@@ -252,8 +342,10 @@ public class FlappyBirdGame extends AnimationPanel {
 		// Make the bird fly up when spacebar is pressed
 		if (c == ' ' && mode != CRASHED) {
 			bird.fly();
-			mode = PLAYING;
 			playSound(Resources.FLY_SOUND);
+			if (mode == READY) {
+				mode = PLAYING;
+			}
 		}
 		// Restart the sequence when j is typed
 		else if (c == 'j') {
@@ -264,9 +356,9 @@ public class FlappyBirdGame extends AnimationPanel {
 			keySequence.append(c);
 		}
 
-		// Toggle hidden features
+		// Toggle dark mode
 		if (keySequence.toString().equals("jiaxuan")) {
-			easterEggsEnabled = !easterEggsEnabled;
+			darkEnabled = !darkEnabled;
 			keySequence.setLength(0);
 		}
 	}

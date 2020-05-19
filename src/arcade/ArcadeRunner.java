@@ -1,3 +1,4 @@
+package arcade;
 
 /**
  * Class ArcadeRunner
@@ -8,8 +9,6 @@
  */
 import java.awt.event.*;
 import javax.swing.JFrame;
-
-import arcade.AnimationPanel;
 
 public class ArcadeRunner 
 {

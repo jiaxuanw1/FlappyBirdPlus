@@ -32,13 +32,13 @@ public class Resources {
 	public static Image BIRD_WING_DOWN;
 
 	public static Image PIPE_IMAGE;
-
 	public static Image BACKDROP_IMAGE;
 	public static Image GROUND_IMAGE;
 	public static Image READY_IMAGE;
 	public static Image GAME_OVER_SCREEN;
 	public static Image NEW_HIGH_SCORE_IMAGE;
 
+	public static Image ALT_PIPE_IMAGE;
 	public static Image ALT_BACKDROP_IMAGE;
 	public static Image ALT_GROUND_IMAGE;
 
@@ -47,11 +47,20 @@ public class Resources {
 	public static Image GOLD_MEDAL;
 	public static Image PLATINUM_MEDAL;
 
+	public static Image MARIO_STANDING;
+	public static Image MARIO_JUMPING;
+	public static Image MARIO_THROWING;
+	public static Image FIREBALL_IMAGE;
+
 	public static Clip DIE_SOUND;
 	public static Clip HIT_SOUND;
 	public static Clip SCORE_SOUND;
 	public static Clip SWOOSH_SOUND;
 	public static Clip FLY_SOUND;
+
+	public static Clip MARIO_FIREBALL_SOUND;
+	public static Clip MARIO_JUMP_SOUND;
+	public static Clip MARIO_PIPE_SOUND;
 
 	public static Font FONT;
 
@@ -63,14 +72,15 @@ public class Resources {
 			BIRD_WING_UP = ImageIO.read(new File("src/resources/images/bird1.png"));
 			BIRD_WING_MID = ImageIO.read(new File("src/resources/images/bird2.png"));
 			BIRD_WING_DOWN = ImageIO.read(new File("src/resources/images/bird3.png"));
-			PIPE_IMAGE = ImageIO.read(new File("src/resources/images/pipes.png"));
 
+			PIPE_IMAGE = ImageIO.read(new File("src/resources/images/pipes.png"));
 			BACKDROP_IMAGE = ImageIO.read(new File("src/resources/images/backdrop.png"));
 			GROUND_IMAGE = ImageIO.read(new File("src/resources/images/ground.jpg"));
 			READY_IMAGE = ImageIO.read(new File("src/resources/images/get_ready.png"));
 			GAME_OVER_SCREEN = ImageIO.read(new File("src/resources/images/game_over.png"));
 			NEW_HIGH_SCORE_IMAGE = ImageIO.read(new File("src/resources/images/new_highscore.jpg"));
 
+			ALT_PIPE_IMAGE = ImageIO.read(new File("src/resources/images/alt_pipes.png"));
 			ALT_BACKDROP_IMAGE = ImageIO.read(new File("src/resources/images/alt_backdrop.png"));
 			ALT_GROUND_IMAGE = ImageIO.read(new File("src/resources/images/alt_ground.png"));
 
@@ -79,11 +89,20 @@ public class Resources {
 			GOLD_MEDAL = ImageIO.read(new File("src/resources/images/gold_medal.jpg"));
 			PLATINUM_MEDAL = ImageIO.read(new File("src/resources/images/platinum_medal.jpg"));
 
+			MARIO_STANDING = ImageIO.read(new File("src/resources/images/mario_standing.png"));
+			MARIO_JUMPING = ImageIO.read(new File("src/resources/images/mario_jumping.png"));
+			MARIO_THROWING = ImageIO.read(new File("src/resources/images/mario_throwing.png"));
+			FIREBALL_IMAGE = ImageIO.read(new File("src/resources/images/fireball.png"));
+
 			DIE_SOUND = loadAudioClip(new File("src/resources/sounds/sfx_die.wav"), -15.0f);
 			HIT_SOUND = loadAudioClip(new File("src/resources/sounds/sfx_hit.wav"), -15.0f);
 			SCORE_SOUND = loadAudioClip(new File("src/resources/sounds/sfx_point.wav"), -15.0f);
 			SWOOSH_SOUND = loadAudioClip(new File("src/resources/sounds/sfx_swooshing.wav"), -15.0f);
 			FLY_SOUND = loadAudioClip(new File("src/resources/sounds/sfx_wing.wav"), -15.0f);
+
+			MARIO_FIREBALL_SOUND = loadAudioClip(new File("src/resources/sounds/smb3_fireball.wav"), -15.0f);
+			MARIO_JUMP_SOUND = loadAudioClip(new File("src/resources/sounds/smb3_jump.wav"), -15.0f);
+			MARIO_PIPE_SOUND = loadAudioClip(new File("src/resources/sounds/smb3_pipe.wav"), -15.0f);
 
 			FONT = Font.createFont(Font.TRUETYPE_FONT, new File("src/resources/fonts/04B_19__.TTF")).deriveFont(40.0f);
 			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();

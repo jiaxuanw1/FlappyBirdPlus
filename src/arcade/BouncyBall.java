@@ -1,3 +1,4 @@
+package arcade;
 
 import java.awt.Color;
 import java.awt.Graphics;

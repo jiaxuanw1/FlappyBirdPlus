@@ -70,7 +70,7 @@ public class Bird {
 	 * window in the ready phase.
 	 */
 	public void reset() {
-		x = 140;
+		x = 120;
 		y = 310;
 		yVel = 0;
 		imageIndex = 0;
