@@ -313,6 +313,7 @@ public class FlappyBirdGame extends AnimationPanel {
 		score = 0;
 		mode = READY;
 		newHighScore = false;
+		dark = Math.random() < 0.5 ? true : false;
 		bird.reset();
 		bird.setColor(randomBirdColor());
 		pipes.clear();
