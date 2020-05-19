@@ -157,7 +157,7 @@ public class FlappyBirdGame extends AnimationPanel {
 			if (pipe.getPreviousX() > bird.getX() && pipe.getX() <= bird.getX() && (mode == PLAYING || mode == MARIO)) {
 				score++;
 				playSound(Resources.SCORE_SOUND);
-				if (score == 47) {
+				if ((score + 3) % 50 == 0) {
 					mode = MARIO;
 				}
 			}

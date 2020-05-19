@@ -93,6 +93,7 @@ public class Pipe {
 	 * 
 	 * @param g  the {@code Graphics} object to be drawn on
 	 * @param io the {@code ImageObserver} to be notified
+	 * @param dark whether to draw the dark graphics
 	 */
 	public void draw(Graphics g, ImageObserver io, boolean dark) {
 		if (dark) {
