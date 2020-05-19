@@ -8,6 +8,7 @@ import java.awt.FontMetrics;
 import java.awt.event.MouseEvent;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.sound.sampled.Clip;
@@ -109,32 +110,20 @@ public class FlappyBirdGame extends AnimationPanel {
 			int frameDifference = frameNumber - marioStartFrame;
 			final int f = 160;
 			final int j = f + 60;
-			switch (frameDifference) {
-				case f:
-				case f + 10:
-				case f + 20:
-				case j + 60:
-				case j + 70:
-				case j + 80:
-					fireball();
-					mario.animateThrow();
-					break;
-				case f + 5:
-				case f + 15:
-				case f + 25:
-				case j + 55:
-				case j + 65:
-				case j + 75:
-					mario.stand();
-					break;
-				case j:
-					mario.jump();
-					break;
-				case j + 130:
-					mario.finalJump();
-					break;
+			List<Integer> fireballFrames = Arrays.asList(f, f + 10, f + 20, j + 60, j + 70, j + 80);
+			List<Integer> standingFrames = Arrays.asList(f + 5, f + 15, f + 25, j + 55, j + 65, j + 75);
+			if (fireballFrames.contains(frameDifference)) {
+				fireball();
+				mario.animateThrow();
+			} else if (standingFrames.contains(frameDifference)) {
+				mario.stand();
+			} else if (frameDifference == j) {
+				mario.jump();
+			} else if (frameDifference == j + 130) {
+				mario.finalJump();
 			}
 
+			// Fireballs
 			for (Fireball fireball : fireballs) {
 				if (bird.intersects(fireball.getBounds())) {
 					crash();
