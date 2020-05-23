@@ -59,6 +59,28 @@ public class Resources {
 	public static Image GOLD_MEDAL;
 	public static Image PLATINUM_MEDAL;
 
+	public static Image BIG_ZERO;
+	public static Image BIG_ONE;
+	public static Image BIG_TWO;
+	public static Image BIG_THREE;
+	public static Image BIG_FOUR;
+	public static Image BIG_FIVE;
+	public static Image BIG_SIX;
+	public static Image BIG_SEVEN;
+	public static Image BIG_EIGHT;
+	public static Image BIG_NINE;
+
+	public static Image SMALL_ZERO;
+	public static Image SMALL_ONE;
+	public static Image SMALL_TWO;
+	public static Image SMALL_THREE;
+	public static Image SMALL_FOUR;
+	public static Image SMALL_FIVE;
+	public static Image SMALL_SIX;
+	public static Image SMALL_SEVEN;
+	public static Image SMALL_EIGHT;
+	public static Image SMALL_NINE;
+
 	public static Image MARIO_STANDING;
 	public static Image MARIO_JUMPING;
 	public static Image MARIO_THROWING;
@@ -110,6 +132,28 @@ public class Resources {
 			SILVER_MEDAL = ImageIO.read(getResource("images/silver_medal.jpg"));
 			GOLD_MEDAL = ImageIO.read(getResource("images/gold_medal.jpg"));
 			PLATINUM_MEDAL = ImageIO.read(getResource("images/platinum_medal.jpg"));
+
+			BIG_ZERO = ImageIO.read(getResource("images/font_big_0.png"));
+			BIG_ONE = ImageIO.read(getResource("images/font_big_1.png"));
+			BIG_TWO = ImageIO.read(getResource("images/font_big_2.png"));
+			BIG_THREE = ImageIO.read(getResource("images/font_big_3.png"));
+			BIG_FOUR = ImageIO.read(getResource("images/font_big_4.png"));
+			BIG_FIVE = ImageIO.read(getResource("images/font_big_5.png"));
+			BIG_SIX = ImageIO.read(getResource("images/font_big_6.png"));
+			BIG_SEVEN = ImageIO.read(getResource("images/font_big_7.png"));
+			BIG_EIGHT = ImageIO.read(getResource("images/font_big_8.png"));
+			BIG_NINE = ImageIO.read(getResource("images/font_big_9.png"));
+
+			SMALL_ZERO = ImageIO.read(getResource("images/font_small_0.png"));
+			SMALL_ONE = ImageIO.read(getResource("images/font_small_1.png"));
+			SMALL_TWO = ImageIO.read(getResource("images/font_small_2.png"));
+			SMALL_THREE = ImageIO.read(getResource("images/font_small_3.png"));
+			SMALL_FOUR = ImageIO.read(getResource("images/font_small_4.png"));
+			SMALL_FIVE = ImageIO.read(getResource("images/font_small_5.png"));
+			SMALL_SIX = ImageIO.read(getResource("images/font_small_6.png"));
+			SMALL_SEVEN = ImageIO.read(getResource("images/font_small_7.png"));
+			SMALL_EIGHT = ImageIO.read(getResource("images/font_small_8.png"));
+			SMALL_NINE = ImageIO.read(getResource("images/font_small_9.png"));
 
 			MARIO_STANDING = ImageIO.read(getResource("images/mario_standing.png"));
 			MARIO_JUMPING = ImageIO.read(getResource("images/mario_jumping.png"));
@@ -206,9 +250,10 @@ public class Resources {
 	}
 
 	/**
-	 * Returns a {@code Clip} containing the audio data from a {@code File}.
+	 * Returns a {@code Clip} object containing the audio data from a file
+	 * referenced by a {@code URL}.
 	 * 
-	 * @param url  the {@code URL} that points to the audio file
+	 * @param url  {@code URL} object that points to the audio file
 	 * @param gain the audio gain to apply, in decibels
 	 * @return a {@code Clip} with the audio data
 	 * @throws IOException

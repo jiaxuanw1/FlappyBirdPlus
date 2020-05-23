@@ -1,11 +1,13 @@
 package flappybird;
 
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.event.MouseEvent;
+import java.awt.image.ImageObserver;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,6 +40,10 @@ public class FlappyBirdGame extends AnimationPanel {
 	private static final int X_VELOCITY = -3; // must be negative to move left
 	public static final int GROUND_LEVEL = 577;
 
+	private static final double NUM_SCALE = 3.4;
+	private static final int BIG_NUM_OVERLAP = 5;
+	private static final int SMALL_NUM_OVERLAP = -2; // negative for more spacing
+
 	// Instance Variables
 	// -------------------------------------------------------
 	private int score;
@@ -52,6 +58,8 @@ public class FlappyBirdGame extends AnimationPanel {
 
 	private final Rectangle bounds;
 	private Rectangle restartButton;
+	private final Image[] BIG_NUMS;
+	private final Image[] SMALL_NUMS;
 
 	private Resources resources;
 	private Bird bird;
@@ -88,6 +96,30 @@ public class FlappyBirdGame extends AnimationPanel {
 		mario = new Mario(marioPipe);
 		fireballs = new ArrayList<Fireball>();
 		marioStartFrame = -9999;
+		
+		BIG_NUMS = new Image[] { 
+				Resources.BIG_ZERO, 
+				Resources.BIG_ONE, 
+				Resources.BIG_TWO,
+				Resources.BIG_THREE, 
+				Resources.BIG_FOUR, 
+				Resources.BIG_FIVE, 
+				Resources.BIG_SIX, 
+				Resources.BIG_SEVEN,
+				Resources.BIG_EIGHT, 
+				Resources.BIG_NINE };
+		
+		SMALL_NUMS = new Image[] { 
+				Resources.SMALL_ZERO, 
+				Resources.SMALL_ONE, 
+				Resources.SMALL_TWO,
+				Resources.SMALL_THREE, 
+				Resources.SMALL_FOUR, 
+				Resources.SMALL_FIVE, 
+				Resources.SMALL_SIX, 
+				Resources.SMALL_SEVEN,
+				Resources.SMALL_EIGHT, 
+				Resources.SMALL_NINE };
 	}
 
 	// The renderFrame method is the one which is called each time a frame is drawn.
@@ -255,14 +287,12 @@ public class FlappyBirdGame extends AnimationPanel {
 			}
 
 			// Draw the score
-			int scoreLen = (int) metrics.getStringBounds(Integer.toString(score), g).getWidth();
-			int scoreStart = 415 - scoreLen;
-			g.drawString(Integer.toString(score), scoreStart, 325);
+			int scoreStart = 412 - getScoreImgLen(score, SMALL_NUMS, SMALL_NUM_OVERLAP);
+			drawScore(score, scoreStart, 290, SMALL_NUMS, SMALL_NUM_OVERLAP, g, this);
 
 			// Draw the high score
-			int highScoreLen = (int) metrics.getStringBounds(Integer.toString(highScore), g).getWidth();
-			int highScoreStart = 415 - highScoreLen;
-			g.drawString(Integer.toString(highScore), highScoreStart, 400);
+			int highScoreStart = 412 - getScoreImgLen(highScore, SMALL_NUMS, SMALL_NUM_OVERLAP);
+			drawScore(highScore, highScoreStart, 365, SMALL_NUMS, SMALL_NUM_OVERLAP, g, this);
 
 			// Draw the medal
 			if (highScore >= 40) {
@@ -281,14 +311,18 @@ public class FlappyBirdGame extends AnimationPanel {
 			}
 		} else {
 			// Draw the score
-			int scoreLen = (int) metrics.getStringBounds(Integer.toString(score), g).getWidth();
-			int start = FRAME_WIDTH / 2 - scoreLen / 2;
-			g.drawString(Integer.toString(score), start, 55);
+			if (newGraphicsEnabled) {
+				int start = FRAME_WIDTH / 2 - getScoreImgLen(score, BIG_NUMS, BIG_NUM_OVERLAP) / 2;
+				drawScore(score, start, 55, BIG_NUMS, BIG_NUM_OVERLAP, g, this);
+			} else {
+				int start = FRAME_WIDTH / 2 - getScoreImgLen(score, SMALL_NUMS, SMALL_NUM_OVERLAP) / 2;
+				drawScore(score, start, 40, SMALL_NUMS, SMALL_NUM_OVERLAP, g, this);
+			}
 
 			// Draw the Get Ready text
 			if (mode == READY) {
 				if (newGraphicsEnabled) {
-					g.drawImage(Resources.NEW_READY_TEXT, 88, 140, 325, 88, this);
+					g.drawImage(Resources.NEW_READY_TEXT, 88, 160, 325, 88, this);
 				} else {
 					g.drawImage(Resources.READY_TEXT, 84, 145, 330, 87, this);
 				}
@@ -298,6 +332,70 @@ public class FlappyBirdGame extends AnimationPanel {
 		return g;
 	}
 	// --end of renderFrame method--
+
+	/**
+	 * Returns the width, in pixels, of a number drawn with images for each of its
+	 * digits and a specified overlap between each digit.
+	 * <p>
+	 * An {@code Image} array must be specified that contains an image for each
+	 * digit, in the order 0-9.
+	 * <p>
+	 * When specifying the overlap, a larger number creates more overlap. This means
+	 * that a negative overlap adds space between each digit.
+	 * 
+	 * @param score     the number to get the length of
+	 * @param numImages array containing an image for each digit
+	 * @param overlap   the amount to overlap, in pixels
+	 * @return the total width of the drawn score
+	 */
+	public int getScoreImgLen(int score, Image[] numImages, int overlap) {
+		int scoreLen = 0;
+		String[] scoreDigits = Integer.toString(score).split("");
+		Image[] digitImages = new Image[scoreDigits.length];
+		for (int i = 0; i < digitImages.length; i++) {
+			int digit = Integer.parseInt(scoreDigits[i]);
+			digitImages[i] = numImages[digit];
+			scoreLen += digitImages[i].getWidth(this);
+		}
+		scoreLen *= NUM_SCALE;
+		scoreLen -= (scoreDigits.length - 1) * overlap;
+		return scoreLen;
+	}
+
+	/**
+	 * Draws a number to the screen with images for each of its digits and a
+	 * specified overlap between each digit.
+	 * <p>
+	 * An {@code Image} array must be specified that contains an image for each
+	 * digit, in the order 0-9.
+	 * <p>
+	 * When specifying the overlap, a larger number creates more overlap. This means
+	 * that a negative overlap adds space between each digit.
+	 * 
+	 * @param score     the number to draw
+	 * @param x         the <i>x</i> coordinate
+	 * @param y         the <i>y</i> coordinate
+	 * @param numImages array containing an image for each digit
+	 * @param overlap   the amount to overlap, in pixels
+	 * @param g         the {@code Graphics} object to be drawn on
+	 * @param io        the {@code ImageObserver} object to be notified
+	 */
+	public void drawScore(int score, int x, int y, Image[] numImages, int overlap, Graphics g, ImageObserver io) {
+		String[] scoreDigits = Integer.toString(score).split("");
+
+		Image[] digitImages = new Image[scoreDigits.length];
+		for (int i = 0; i < digitImages.length; i++) {
+			int digit = Integer.parseInt(scoreDigits[i]);
+			digitImages[i] = numImages[digit];
+		}
+
+		int digitX = x;
+		for (Image img : digitImages) {
+			g.drawImage(img, digitX, y, (int) (NUM_SCALE * img.getWidth(io)), (int) (NUM_SCALE * img.getHeight(io)),
+					io);
+			digitX += NUM_SCALE * img.getWidth(io) - overlap;
+		}
+	}
 
 	public void crash() {
 		mode = CRASHED;
