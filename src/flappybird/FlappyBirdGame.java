@@ -465,13 +465,12 @@ public class FlappyBirdGame extends AnimationPanel {
 			if (mode == READY) {
 				mode = PLAYING;
 			}
-		}
-		// Restart the sequence when j is typed
-		else if (c == 'j') {
-			keySequence = new StringBuilder("j");
-		}
-		// Add the typed letter to the sequence
-		else {
+		} else {
+			// Restart the sequence when j or r is typed
+			if (c == 'j' || c == 'r') {
+				keySequence.setLength(0);
+			}
+			// Add the typed letter to the sequence
 			keySequence.append(c);
 		}
 
@@ -485,6 +484,11 @@ public class FlappyBirdGame extends AnimationPanel {
 			} else {
 				restartButton = new Rectangle(185, 450, 140, 40);
 			}
+		}
+		// Reset the high score
+		else if (keySequence.toString().equals("reset")) {
+			highScore = 0;
+			resources.writeHighScore(0);
 		}
 	}
 
