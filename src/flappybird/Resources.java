@@ -44,14 +44,17 @@ public class Resources {
 	public static Image GROUND_IMAGE;
 	public static Image READY_TEXT;
 	public static Image GAME_OVER_SCREEN;
+	public static Image GAME_OVER_TEXT;
+	public static Image GAME_OVER_MIDDLE;
+	public static Image OK_BUTTON_IMAGE;
 	public static Image NEW_BEST_IMAGE;
 
 	public static Image DARK_BACKDROP_IMAGE;
 	public static Image NEW_PIPE_IMAGE;
 	public static Image NEW_GROUND_IMAGE;
 	public static Image NEW_READY_TEXT;
-	public static Image GAME_OVER_TEXT;
-	public static Image GAME_OVER_MIDDLE;
+	public static Image NEW_GAME_OVER_TEXT;
+	public static Image NEW_GAME_OVER_MIDDLE;
 	public static Image REPLAY_BUTTON_IMAGE;
 
 	public static Image BRONZE_MEDAL;
@@ -118,20 +121,23 @@ public class Resources {
 			GROUND_IMAGE = ImageIO.read(getResource("images/ground.jpg"));
 			READY_TEXT = ImageIO.read(getResource("images/get_ready.png"));
 			GAME_OVER_SCREEN = ImageIO.read(getResource("images/game_over.png"));
-			NEW_BEST_IMAGE = ImageIO.read(getResource("images/new_highscore.jpg"));
+			GAME_OVER_TEXT = ImageIO.read(getResource("images/game_over_text.png"));
+			GAME_OVER_MIDDLE = ImageIO.read(getResource("images/game_end_middle.png"));
+			OK_BUTTON_IMAGE = ImageIO.read(getResource("images/ok_button.png"));
+			NEW_BEST_IMAGE = ImageIO.read(getResource("images/new_best.png"));
 
 			DARK_BACKDROP_IMAGE = ImageIO.read(getResource("images/new_backdrop.png"));
 			NEW_PIPE_IMAGE = ImageIO.read(getResource("images/new_pipes.png"));
 			NEW_GROUND_IMAGE = ImageIO.read(getResource("images/new_ground.png"));
 			NEW_READY_TEXT = ImageIO.read(getResource("images/new_get_ready.png"));
-			GAME_OVER_TEXT = ImageIO.read(getResource("images/game_over_text.png"));
-			GAME_OVER_MIDDLE = ImageIO.read(getResource("images/game_end_middle.png"));
+			NEW_GAME_OVER_TEXT = ImageIO.read(getResource("images/new_game_over_text.png"));
+			NEW_GAME_OVER_MIDDLE = ImageIO.read(getResource("images/new_game_end_middle.png"));
 			REPLAY_BUTTON_IMAGE = ImageIO.read(getResource("images/replay_button.png"));
 
-			BRONZE_MEDAL = ImageIO.read(getResource("images/bronze_medal.jpg"));
-			SILVER_MEDAL = ImageIO.read(getResource("images/silver_medal.jpg"));
-			GOLD_MEDAL = ImageIO.read(getResource("images/gold_medal.jpg"));
-			PLATINUM_MEDAL = ImageIO.read(getResource("images/platinum_medal.jpg"));
+			BRONZE_MEDAL = ImageIO.read(getResource("images/bronze_medal.png"));
+			SILVER_MEDAL = ImageIO.read(getResource("images/silver_medal.png"));
+			GOLD_MEDAL = ImageIO.read(getResource("images/gold_medal.png"));
+			PLATINUM_MEDAL = ImageIO.read(getResource("images/platinum_medal.png"));
 
 			BIG_ZERO = ImageIO.read(getResource("images/font_big_0.png"));
 			BIG_ONE = ImageIO.read(getResource("images/font_big_1.png"));

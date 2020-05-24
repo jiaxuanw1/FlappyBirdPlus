@@ -55,6 +55,8 @@ public class FlappyBirdGame extends AnimationPanel {
 	private boolean newGraphicsEnabled;
 	private boolean dark;
 	private StringBuilder keySequence;
+	
+	private boolean buttonPressed;
 
 	private final Rectangle bounds;
 	private Rectangle restartButton;
@@ -279,11 +281,21 @@ public class FlappyBirdGame extends AnimationPanel {
 		if (mode == CRASHED) {
 			// Draw the Game Over screen
 			if (newGraphicsEnabled) {
-				g.drawImage(Resources.GAME_OVER_TEXT, 80, 115, 340, 74, this);
-				g.drawImage(Resources.GAME_OVER_MIDDLE, 50, 230, 400, 202, this);
-				g.drawImage(Resources.REPLAY_BUTTON_IMAGE, 158, 475, 184, 103, this);
+				g.drawImage(Resources.NEW_GAME_OVER_TEXT, 80, 115, 340, 74, this);
+				g.drawImage(Resources.NEW_GAME_OVER_MIDDLE, 50, 230, 400, 202, this);
+				if (buttonPressed) {
+					g.drawImage(Resources.REPLAY_BUTTON_IMAGE, 158, 478, 184, 103, this);
+				} else {
+					g.drawImage(Resources.REPLAY_BUTTON_IMAGE, 158, 475, 184, 103, this);
+				}
 			} else {
-				g.drawImage(Resources.GAME_OVER_SCREEN, 50, 120, 400, 400, this);
+				g.drawImage(Resources.GAME_OVER_TEXT, 84, 130, 333, 67, this);
+				g.drawImage(Resources.GAME_OVER_MIDDLE, 50, 232, 400, 202, this);
+				if (buttonPressed) {
+					g.drawImage(Resources.OK_BUTTON_IMAGE, 179, 503, 142, 50, this);
+				} else {
+					g.drawImage(Resources.OK_BUTTON_IMAGE, 179, 500, 142, 50, this);
+				}
 			}
 
 			// Draw the score
@@ -295,19 +307,21 @@ public class FlappyBirdGame extends AnimationPanel {
 			drawScore(highScore, highScoreStart, 365, SMALL_NUMS, SMALL_NUM_OVERLAP, g, this);
 
 			// Draw the medal
+			int medalX = 96;
+			int medalY = 305;
 			if (highScore >= 40) {
-				g.drawImage(Resources.PLATINUM_MEDAL, 85, 300, 93, 90, this);
+				g.drawImage(Resources.PLATINUM_MEDAL, medalX, medalY, 77, 77, this);
 			} else if (highScore >= 30) {
-				g.drawImage(Resources.GOLD_MEDAL, 90, 300, 93, 91, this);
+				g.drawImage(Resources.GOLD_MEDAL, medalX, medalY, 77, 77, this);
 			} else if (highScore >= 20) {
-				g.drawImage(Resources.SILVER_MEDAL, 90, 300, 88, 95, this);
+				g.drawImage(Resources.SILVER_MEDAL, medalX, medalY, 77, 77, this);
 			} else if (highScore >= 10) {
-				g.drawImage(Resources.BRONZE_MEDAL, 88, 300, 93, 91, this);
+				g.drawImage(Resources.BRONZE_MEDAL, medalX, medalY, 77, 77, this);
 			}
 
 			// Draw the "new" label if it's a new high score
 			if (newHighScore) {
-				g.drawImage(Resources.NEW_BEST_IMAGE, 295, 332, 53, 26, this);
+				g.drawImage(Resources.NEW_BEST_IMAGE, 290, 333, 57, 25, this);
 			}
 		} else {
 			// Draw the score
@@ -324,7 +338,7 @@ public class FlappyBirdGame extends AnimationPanel {
 				if (newGraphicsEnabled) {
 					g.drawImage(Resources.NEW_READY_TEXT, 88, 160, 325, 88, this);
 				} else {
-					g.drawImage(Resources.READY_TEXT, 84, 145, 330, 87, this);
+					g.drawImage(Resources.READY_TEXT, 100, 145, 300, 76, this);
 				}
 			}
 		}
@@ -351,12 +365,14 @@ public class FlappyBirdGame extends AnimationPanel {
 	public int getScoreImgLen(int score, Image[] numImages, int overlap) {
 		int scoreLen = 0;
 		String[] scoreDigits = Integer.toString(score).split("");
+
 		Image[] digitImages = new Image[scoreDigits.length];
 		for (int i = 0; i < digitImages.length; i++) {
 			int digit = Integer.parseInt(scoreDigits[i]);
 			digitImages[i] = numImages[digit];
 			scoreLen += digitImages[i].getWidth(this);
 		}
+
 		scoreLen *= NUM_SCALE;
 		scoreLen -= (scoreDigits.length - 1) * overlap;
 		return scoreLen;
@@ -452,6 +468,16 @@ public class FlappyBirdGame extends AnimationPanel {
 		}
 	}
 
+	public void mousePressed(MouseEvent e) {
+		Point p = e.getPoint();
+
+		buttonPressed = restartButton.contains(p);
+	}
+
+	public void mouseReleased(MouseEvent e) {
+		buttonPressed = false;
+	}
+
 	// -------------------------------------------------------
 	// Respond to Keyboard Events
 	// -------------------------------------------------------
@@ -482,7 +508,7 @@ public class FlappyBirdGame extends AnimationPanel {
 			if (newGraphicsEnabled) {
 				restartButton = new Rectangle(158, 475, 184, 103);
 			} else {
-				restartButton = new Rectangle(185, 450, 140, 40);
+				restartButton = new Rectangle(179, 500, 142, 50);
 			}
 		}
 		// Reset the high score
